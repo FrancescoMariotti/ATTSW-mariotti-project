@@ -1,0 +1,22 @@
+language: java
+
+dist: xenial
+
+jdk: openjdk8
+
+git:
+  depth: false
+
+addons:
+  sonarcloud:
+    organization: francescomariotti
+
+install: true
+
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.sonar/cache
+
+script:
+- mvn -f mariotti-project/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
