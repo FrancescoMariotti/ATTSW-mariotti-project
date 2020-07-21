@@ -26,6 +26,6 @@ public class OfficeJpaTest {
 		assertThat(saved.getName()).isEqualTo("office");
 		assertThat(saved.getEmployees()).isNotNull();
 		assertThat(saved.getId()).isNotNull();
-		assertThat(saved.getId()).isGreaterThan(0);
+		assertThat(saved.getId()).isPositive();
 	}
 }

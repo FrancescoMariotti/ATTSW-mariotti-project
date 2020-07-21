@@ -26,8 +26,8 @@ public class EmployeeJpaTest {
 		Employee saved = entityManager.persistFlushFind(new Employee(null, "employee", 1000, office));
 		assertThat(saved.getName()).isEqualTo("employee");
 		assertThat(saved.getSalary()).isEqualTo(1000);
-		assertThat(saved.getOffice().getId()).isEqualTo(office.getId());
+		assertThat(saved.getOffice()).isEqualTo(office);
 		assertThat(saved.getId()).isNotNull();
-		assertThat(saved.getId()).isGreaterThan(0);
+		assertThat(saved.getId()).isPositive();
 	}
 }
