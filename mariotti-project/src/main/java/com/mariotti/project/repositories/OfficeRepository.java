@@ -6,4 +6,6 @@ import com.mariotti.project.models.Office;
 
 public interface OfficeRepository extends CrudRepository<Office, Long> {
 
+	Office findByName(String name);
+
 }

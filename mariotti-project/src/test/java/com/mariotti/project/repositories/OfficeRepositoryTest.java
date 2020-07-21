@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.mariotti.project.models.Employee;
@@ -19,12 +20,32 @@ public class OfficeRepositoryTest {
 
 	@Autowired
 	private OfficeRepository repository;
+	
+	@Autowired
+	private TestEntityManager manager;
 
 	@Test
-	public void saveOfficeTest() {
+	public void testSaveOffice() {
 		Office office = new Office(null, "office", new ArrayList<Employee>());
 		Office saved = repository.save(office);
-		Iterable<Office> employees = repository.findAll();
-		assertThat(employees).containsExactly(saved);
+		Iterable<Office> found = repository.findAll();
+		assertThat(found).containsExactly(saved);
 	}
+	
+	@Test
+	public void testFindAllOffices() {
+		Office office = new Office(null, "office", new ArrayList<Employee>());
+		Office saved = manager.persistFlushFind(office);
+		Iterable<Office> found = repository.findAll();
+		assertThat(found).containsExactly(saved);
+	}
+	
+	@Test
+	public void testFindByName() {
+		Office office = new Office(null, "office", new ArrayList<Employee>());
+		Office saved = manager.persistFlushFind(office);
+		Office found = repository.findByName("office");
+		assertThat(found).isEqualTo(saved);
+	}
+	
 }
