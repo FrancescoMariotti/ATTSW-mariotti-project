@@ -86,14 +86,13 @@ public class OfficeWebControllerTest {
 	public void testPostOfficeWithIdShouldUpdateExistingOffice() throws Exception {
 		mvc.perform(post("/save_office").param("id", "1").param("name", "test"))
 				.andExpect(view().name("redirect:/"));
-		verify(officeService).updateOfficeById(1L, new Office(1L, "test", new ArrayList<Employee>()));
+		verify(officeService).updateOfficeById(1L, new Office(1L, "test", null));
 	}
 
 	@Test
 	public void testPostOfficeWithNoIdShouldAddNewOffice() throws Exception {
-		mvc.perform(post("/save_office").param("name", "test"))
-				.andExpect(view().name("redirect:/"));
-		verify(officeService).insertNewOffice(new Office(null, "test", new ArrayList<Employee>()));
+		mvc.perform(post("/save_office").param("name", "test")).andExpect(view().name("redirect:/"));
+		verify(officeService).insertNewOffice(new Office(null, "test", null));
 	}
 
 }

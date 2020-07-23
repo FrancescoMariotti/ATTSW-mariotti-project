@@ -2,11 +2,13 @@ package com.mariotti.project.controllers;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
@@ -15,7 +17,7 @@ import com.mariotti.project.services.OfficeService;
 public class OfficeWebController {
 
 	private static final String MESSAGE = "message";
-	
+
 	@Autowired
 	private OfficeService officeService;
 
@@ -42,4 +44,14 @@ public class OfficeWebController {
 		return "edit_office";
 	}
 
+	@PostMapping("/save_office")
+	public String saveOffice(Office office) {
+		final Long id = office.getId();
+		if (id == null) {
+			officeService.insertNewOffice(office);
+		} else {
+			officeService.updateOfficeById(id, office);
+		}
+		return "redirect:/";
+	}
 }

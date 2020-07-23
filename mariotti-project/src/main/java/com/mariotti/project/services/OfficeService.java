@@ -19,4 +19,12 @@ public class OfficeService {
 		throw new UnsupportedOperationException(TEMP);
 	}
 
+	public Office updateOfficeById(long id, Office office) {
+		throw new UnsupportedOperationException(TEMP);
+	}
+
+	public Office insertNewOffice(Office office) {
+		throw new UnsupportedOperationException(TEMP);
+	}
+
 }
