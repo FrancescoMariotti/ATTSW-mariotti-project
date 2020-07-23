@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
@@ -22,6 +23,14 @@ public class OfficeWebController {
 		model.addAttribute("offices", offices);
 		model.addAttribute("message", offices.isEmpty() ? "No office found" : "");
 		return "index";
+	}
+
+	@GetMapping("/edit_office/{id}")
+	public String editEmployee(@PathVariable long id, Model model) {
+		Office officeById = officeService.getOfficeById(id);
+		model.addAttribute("office", officeById);
+		model.addAttribute("message", officeById == null ? "No office found with id: " + id : "");
+		return "edit_office";
 	}
 
 }

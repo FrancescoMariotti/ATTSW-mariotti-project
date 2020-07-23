@@ -15,4 +15,8 @@ public class OfficeService {
 		throw new UnsupportedOperationException(TEMP);
 	}
 
+	public Office getOfficeById(long id) {
+		throw new UnsupportedOperationException(TEMP);
+	}
+
 }
