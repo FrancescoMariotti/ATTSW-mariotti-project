@@ -26,10 +26,17 @@ public class OfficeWebController {
 	}
 
 	@GetMapping("/edit_office/{id}")
-	public String editEmployee(@PathVariable long id, Model model) {
+	public String editOffice(@PathVariable long id, Model model) {
 		Office officeById = officeService.getOfficeById(id);
 		model.addAttribute("office", officeById);
 		model.addAttribute("message", officeById == null ? "No office found with id: " + id : "");
+		return "edit_office";
+	}
+
+	@GetMapping("/new_office")
+	public String newOffice(Model model) {
+		model.addAttribute("office", new Office());
+		model.addAttribute("message", "");
 		return "edit_office";
 	}
 
