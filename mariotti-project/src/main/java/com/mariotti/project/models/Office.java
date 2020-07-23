@@ -14,6 +14,9 @@ public class Office {
 		this.employees=employees;
 	}
 
+	public Office() {
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -61,16 +61,24 @@ public class OfficeWebControllerTest {
 	@Test
 	public void testEditOfficeWhenItIsNotFound() throws Exception {
 		when(officeService.getOfficeById(1L)).thenReturn(null);
-		mvc.perform(get("/edit_office/1")).andExpect(view().name("edit_office")).andExpect(model().attribute("office", nullValue()))
+		mvc.perform(get("/edit_office/1")).andExpect(view().name("edit_office"))
+				.andExpect(model().attribute("office", nullValue()))
 				.andExpect(model().attribute("message", "No office found with id: 1"));
 	}
-	
+
 	@Test
 	public void testEditOfficeWhenItIsFound() throws Exception {
 		Office office = new Office(1L, "test", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
-		mvc.perform(get("/edit_office/1")).andExpect(view().name("edit_office")).andExpect(model().attribute("office", office))
-				.andExpect(model().attribute("message", ""));
+		mvc.perform(get("/edit_office/1")).andExpect(view().name("edit_office"))
+				.andExpect(model().attribute("office", office)).andExpect(model().attribute("message", ""));
 	}
-	
+
+	@Test
+	public void testEditNewOffice() throws Exception {
+		mvc.perform(get("/new_office")).andExpect(view().name("edit_office")).andExpect(model().attribute("office", new Office()))
+				.andExpect(model().attribute("message", ""));
+		verifyZeroInteractions(officeService);
+	}
+
 }
