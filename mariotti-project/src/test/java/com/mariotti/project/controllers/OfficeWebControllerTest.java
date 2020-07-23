@@ -1,5 +1,6 @@
 package com.mariotti.project.controllers;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,7 +28,7 @@ import com.mariotti.project.services.OfficeService;
 public class OfficeWebControllerTest {
 	@Autowired
 	private MockMvc mvc;
-	
+
 	@MockBean
 	private OfficeService officeService;
 
@@ -46,13 +47,30 @@ public class OfficeWebControllerTest {
 		List<Office> offices = asList(new Office(1L, "test", new ArrayList<Employee>()));
 		when(officeService.getAllOffices()).thenReturn(offices);
 		mvc.perform(get("/")).andExpect(view().name("index")).andExpect(model().attribute("offices", offices))
-		.andExpect(model().attribute("message",""));
+				.andExpect(model().attribute("message", ""));
 	}
-	
+
 	@Test
 	public void testHomeViewWithNoOfficeShowsMessage() throws Exception {
 		when(officeService.getAllOffices()).thenReturn(Collections.emptyList());
-		mvc.perform(get("/")).andExpect(view().name("index")).andExpect(model().attribute("offices", Collections.emptyList()))
-		.andExpect(model().attribute("message","No office found"));
+		mvc.perform(get("/")).andExpect(view().name("index"))
+				.andExpect(model().attribute("offices", Collections.emptyList()))
+				.andExpect(model().attribute("message", "No office found"));
 	}
+
+	@Test
+	public void testEditOfficeWhenItIsNotFound() throws Exception {
+		when(officeService.getOfficeById(1L)).thenReturn(null);
+		mvc.perform(get("/edit_office/1")).andExpect(view().name("edit_office")).andExpect(model().attribute("office", nullValue()))
+				.andExpect(model().attribute("message", "No office found with id: 1"));
+	}
+	
+	@Test
+	public void testEditOfficeWhenItIsFound() throws Exception {
+		Office office = new Office(1L, "test", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		mvc.perform(get("/edit_office/1")).andExpect(view().name("edit_office")).andExpect(model().attribute("office", office))
+				.andExpect(model().attribute("message", ""));
+	}
+	
 }
