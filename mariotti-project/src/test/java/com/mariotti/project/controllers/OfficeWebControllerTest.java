@@ -3,6 +3,7 @@ package com.mariotti.project.controllers;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static java.util.Arrays.asList;
 
@@ -76,9 +77,23 @@ public class OfficeWebControllerTest {
 
 	@Test
 	public void testEditNewOffice() throws Exception {
-		mvc.perform(get("/new_office")).andExpect(view().name("edit_office")).andExpect(model().attribute("office", new Office()))
-				.andExpect(model().attribute("message", ""));
+		mvc.perform(get("/new_office")).andExpect(view().name("edit_office"))
+				.andExpect(model().attribute("office", new Office())).andExpect(model().attribute("message", ""));
 		verifyZeroInteractions(officeService);
+	}
+
+	@Test
+	public void testPostOfficeWithIdShouldUpdateExistingOffice() throws Exception {
+		mvc.perform(post("/save_office").param("id", "1").param("name", "test"))
+				.andExpect(view().name("redirect:/"));
+		verify(officeService).updateOfficeById(1L, new Office(1L, "test", new ArrayList<Employee>()));
+	}
+
+	@Test
+	public void testPostOfficeWithNoIdShouldAddNewOffice() throws Exception {
+		mvc.perform(post("/save_office").param("name", "test"))
+				.andExpect(view().name("redirect:/"));
+		verify(officeService).insertNewOffice(new Office(null, "test", new ArrayList<Employee>()));
 	}
 
 }
