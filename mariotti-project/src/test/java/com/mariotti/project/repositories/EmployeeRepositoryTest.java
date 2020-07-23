@@ -2,7 +2,9 @@ package com.mariotti.project.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +32,7 @@ public class EmployeeRepositoryTest {
 		manager.persistFlushFind(office);
 		Employee employee = new Employee(null, "employee", 1000, office);
 		Employee saved = manager.persistFlushFind(employee);
-		Iterable<Employee> found = repository.findAll();
+		List<Employee> found = repository.findAll();
 		assertThat(found).containsExactly(saved);
 	}
 
@@ -58,7 +60,7 @@ public class EmployeeRepositoryTest {
 		Employee employee2 = new Employee(null, "employee2", 2000, office2);
 		Employee saved = manager.persistFlushFind(employee1);
 		manager.persistFlushFind(employee2);
-		Iterable<Employee> found = repository.findAllByOffice(office1);
+		List<Employee> found = repository.findAllByOffice(office1);
 		assertThat(found).containsExactly(saved);
 	}
 }

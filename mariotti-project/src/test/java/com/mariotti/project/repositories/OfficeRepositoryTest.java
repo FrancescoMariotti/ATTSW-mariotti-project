@@ -3,6 +3,7 @@ package com.mariotti.project.repositories;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class OfficeRepositoryTest {
 	public void testSaveOffice() {
 		Office office = new Office(null, "office", new ArrayList<Employee>());
 		Office saved = repository.save(office);
-		Iterable<Office> found = repository.findAll();
+		List<Office> found = repository.findAll();
 		assertThat(found).containsExactly(saved);
 	}
 	
@@ -36,7 +37,7 @@ public class OfficeRepositoryTest {
 	public void testFindAllOffices() {
 		Office office = new Office(null, "office", new ArrayList<Employee>());
 		Office saved = manager.persistFlushFind(office);
-		Iterable<Office> found = repository.findAll();
+		List<Office> found = repository.findAll();
 		assertThat(found).containsExactly(saved);
 	}
 	
