@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -44,6 +45,14 @@ public class OfficeWebControllerTest {
 	public void testHomeViewShowsOffices() throws Exception {
 		List<Office> offices = asList(new Office(1L, "test", new ArrayList<Employee>()));
 		when(officeService.getAllOffices()).thenReturn(offices);
-		mvc.perform(get("/")).andExpect(view().name("index")).andExpect(model().attribute("offices", offices));
+		mvc.perform(get("/")).andExpect(view().name("index")).andExpect(model().attribute("offices", offices))
+		.andExpect(model().attribute("message",""));
+	}
+	
+	@Test
+	public void testHomeViewWithNoOfficeShowsMessage() throws Exception {
+		when(officeService.getAllOffices()).thenReturn(Collections.emptyList());
+		mvc.perform(get("/")).andExpect(view().name("index")).andExpect(model().attribute("offices", Collections.emptyList()))
+		.andExpect(model().attribute("message","No office found"));
 	}
 }
