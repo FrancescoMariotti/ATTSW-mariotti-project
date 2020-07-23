@@ -14,6 +14,8 @@ import com.mariotti.project.services.OfficeService;
 @Controller
 public class OfficeWebController {
 
+	private static final String MESSAGE = "message";
+	
 	@Autowired
 	private OfficeService officeService;
 
@@ -21,7 +23,7 @@ public class OfficeWebController {
 	public String index(Model model) {
 		List<Office> offices = officeService.getAllOffices();
 		model.addAttribute("offices", offices);
-		model.addAttribute("message", offices.isEmpty() ? "No office found" : "");
+		model.addAttribute(MESSAGE, offices.isEmpty() ? "No office found" : "");
 		return "index";
 	}
 
@@ -29,14 +31,14 @@ public class OfficeWebController {
 	public String editOffice(@PathVariable long id, Model model) {
 		Office officeById = officeService.getOfficeById(id);
 		model.addAttribute("office", officeById);
-		model.addAttribute("message", officeById == null ? "No office found with id: " + id : "");
+		model.addAttribute(MESSAGE, officeById == null ? "No office found with id: " + id : "");
 		return "edit_office";
 	}
 
 	@GetMapping("/new_office")
 	public String newOffice(Model model) {
 		model.addAttribute("office", new Office());
-		model.addAttribute("message", "");
+		model.addAttribute(MESSAGE, "");
 		return "edit_office";
 	}
 
