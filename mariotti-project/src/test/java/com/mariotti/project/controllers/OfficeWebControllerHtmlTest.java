@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
@@ -49,6 +50,7 @@ public class OfficeWebControllerHtmlTest {
 				new Office(2L, "office2", new ArrayList<Employee>())));
 		HtmlPage page = this.webClient.getPage("/");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No office found");
-		page.getHtmlElementById("office_table");
+		HtmlTable table = page.getHtmlElementById("office_table");
+		assertThat(table.asText()).isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1\n" + "2	office2");
 	}
 }

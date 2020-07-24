@@ -12,6 +12,19 @@
 	<!-- ELSE -->
 	<div th:unless="${offices.empty}">
 		<table id="office_table">
+			<caption>Offices:</caption>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="office : ${offices}">
+					<td th:text="${office.id}"></td>
+					<td th:text="${office.name}"></td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 </body>
