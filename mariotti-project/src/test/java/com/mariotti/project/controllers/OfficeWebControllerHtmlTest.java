@@ -1,6 +1,7 @@
 package com.mariotti.project.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static java.util.Arrays.asList;
 
@@ -12,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.mariotti.project.models.Employee;
@@ -60,6 +62,16 @@ public class OfficeWebControllerHtmlTest {
 		when(officeService.getOfficeById(1L)).thenReturn(null);
 		HtmlPage page = this.webClient.getPage("/edit_office/1");
 		assertThat(page.getBody().getTextContent()).contains("No office found with id: 1");
+	}
+
+	@Test
+	public void testEditExistentOffice() throws Exception {
+		when(officeService.getOfficeById(1)).thenReturn(new Office(1L, "original name", new ArrayList<Employee>()));
+		HtmlPage page = this.webClient.getPage("/edit_office/1");
+		final HtmlForm form = page.getFormByName("office_form");
+		form.getInputByValue("original name").setValueAttribute("modified name");
+		form.getButtonByName("btn_submit").click();
+		verify(officeService).updateOfficeById(1L, new Office(1L, "modified name", null));
 	}
 
 	private String removeWindowsCR(String s) {
