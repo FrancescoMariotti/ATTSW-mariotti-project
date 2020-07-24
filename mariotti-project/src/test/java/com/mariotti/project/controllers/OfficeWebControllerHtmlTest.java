@@ -51,6 +51,11 @@ public class OfficeWebControllerHtmlTest {
 		HtmlPage page = this.webClient.getPage("/");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No office found");
 		HtmlTable table = page.getHtmlElementById("office_table");
-		assertThat(table.asText()).isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1\n" + "2	office2");
+		assertThat(removeWindowsCR(table.asText()))
+				.isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1\n" + "2	office2");
+	}
+
+	private String removeWindowsCR(String s) {
+		return s.replaceAll("\r", "");
 	}
 }
