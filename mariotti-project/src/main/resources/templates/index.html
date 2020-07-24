@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
 <title>Offices</title>
 </head>
 <body>
-No office found
+	<!-- IF NO OFFICE IS PRESENT -->
+	<div th:if="${offices.empty}">
+		<div>No office found</div>
+	</div>
+	<!-- ELSE -->
+	<div th:unless="${offices.empty}">
+		<table id="office_table">
+		</table>
+	</div>
 </body>
 </html>
