@@ -55,6 +55,13 @@ public class OfficeWebControllerHtmlTest {
 				.isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1\n" + "2	office2");
 	}
 
+	@Test
+	public void testEditInexistentOffice() throws Exception {
+		when(officeService.getOfficeById(1L)).thenReturn(null);
+		HtmlPage page = this.webClient.getPage("/edit_office/1");
+		assertThat(page.getBody().getTextContent()).contains("No office found with id: 1");
+	}
+
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
