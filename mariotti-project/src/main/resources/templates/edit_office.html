@@ -12,8 +12,6 @@
 	<div th:if="${message.empty}">
 		<form name="office_form" action="#" th:action="@{/save_office}"
 			th:object="${office}" method="post">
-			<!-- The hidden field for the Employee's identifier
-				will be sent together with the other values-->
 			<input type="hidden" th:field="*{id}" />
 			<p>
 				Name: <input type="text" th:field="*{name}" />

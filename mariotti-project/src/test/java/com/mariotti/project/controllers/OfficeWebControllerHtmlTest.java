@@ -74,6 +74,15 @@ public class OfficeWebControllerHtmlTest {
 		verify(officeService).updateOfficeById(1L, new Office(1L, "modified name", null));
 	}
 
+	@Test
+	public void testEditNewOffice() throws Exception {
+		HtmlPage page = this.webClient.getPage("/new_office");
+		final HtmlForm form = page.getFormByName("office_form");
+		form.getInputByName("name").setValueAttribute("new name");
+		form.getButtonByName("btn_submit").click();
+		verify(officeService).insertNewOffice(new Office(null, "new name", null));
+	}
+
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
