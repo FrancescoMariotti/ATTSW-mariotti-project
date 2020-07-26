@@ -83,6 +83,12 @@ public class OfficeWebControllerHtmlTest {
 		verify(officeService).insertNewOffice(new Office(null, "new name", null));
 	}
 
+	@Test
+	public void testHomePageShouldHaveALinkForAddingNewOffice() throws Exception {
+		HtmlPage homePage = this.webClient.getPage("/");
+		assertThat(homePage.getAnchorByText("New office").getHrefAttribute()).isEqualTo("/new_office");
+	}
+
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
