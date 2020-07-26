@@ -26,6 +26,7 @@
 				<tr th:each="office : ${offices}">
 					<td th:text="${office.id}"></td>
 					<td th:text="${office.name}"></td>
+					<td><a th:href="@{'/edit_office/' + ${office.id}}">Edit</a></td>
 				</tr>
 			</tbody>
 		</table>
