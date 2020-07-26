@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.mariotti.project.models.Employee;
@@ -35,4 +36,9 @@ public class EmployeeWebControllerTest {
 				.andExpect(model().attribute("office", office));
 	}
 
+	@Test
+	public void testReturnEmployeesOfficeView() throws Exception {
+		ModelAndViewAssert.assertViewName(mvc.perform(get("/employees_office/1")).andReturn().getModelAndView(), "employees_office");
+	}
+	
 }

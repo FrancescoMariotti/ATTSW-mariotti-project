@@ -19,7 +19,7 @@ public class EmployeeWebController {
 	private OfficeService officeService;
 
 	@GetMapping("/employees_office/{officeId}")
-	public String index(@PathVariable long officeId, Model model) {
+	public String employeesOffice(@PathVariable long officeId, Model model) {
 		Office officeById = officeService.getOfficeById(officeId);
 		model.addAttribute("office", officeById);
 		return "employees_office";
