@@ -54,7 +54,9 @@ public class OfficeWebControllerHtmlTest {
 		assertThat(page.getBody().getTextContent()).doesNotContain("No office found");
 		HtmlTable table = page.getHtmlElementById("office_table");
 		assertThat(removeWindowsCR(table.asText()))
-				.isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1\n" + "2	office2");
+				.isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1	Edit\n" + "2	office2	Edit");
+		page.getAnchorByHref("/edit/1");
+		page.getAnchorByHref("/edit/2");
 	}
 
 	@Test
