@@ -16,6 +16,8 @@ import com.mariotti.project.services.OfficeService;
 @Controller
 public class EmployeeWebController {
 
+	private static final String MESSAGE = "message";
+	
 	@Autowired
 	private OfficeService officeService;
 	@Autowired
@@ -27,6 +29,7 @@ public class EmployeeWebController {
 		model.addAttribute("office", officeById);
 		List<Employee> employees = employeeService.getEmployeesByOffice(officeById);
 		model.addAttribute("employees", employees);
+		model.addAttribute(MESSAGE, employees.isEmpty() ? "No employee found in this office" : "");
 		return "employees_office";
 	}
 }
