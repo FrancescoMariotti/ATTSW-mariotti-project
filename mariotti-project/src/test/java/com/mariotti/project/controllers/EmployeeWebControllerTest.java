@@ -31,7 +31,8 @@ public class EmployeeWebControllerTest {
 	public void testStatus200() throws Exception {
 		Office office = new Office(1L, "test", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
-		mvc.perform(get("/employees_office/1")).andExpect(status().is2xxSuccessful());
+		mvc.perform(get("/employees_office/1")).andExpect(status().is2xxSuccessful())
+				.andExpect(model().attribute("office", office));
 	}
 
 }
