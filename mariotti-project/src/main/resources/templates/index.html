@@ -5,6 +5,9 @@
 <title>Offices</title>
 </head>
 <body>
+	<div>
+		<a th:href="@{/new_office}">New office</a>
+	</div>
 	<!-- IF NO OFFICE IS PRESENT -->
 	<div th:if="${offices.empty}">
 		<div>No office found</div>
