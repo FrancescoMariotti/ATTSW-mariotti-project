@@ -1,5 +1,6 @@
 package com.mariotti.project.controllers;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -45,5 +46,15 @@ public class EmployeeWebControllerHtmlTest {
 		when(employeeService.getEmployeesByOffice(office)).thenReturn(Collections.emptyList());
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
 		assertThat(page.getBody().getTextContent()).contains("No employee found in this office");
+	}
+
+	@Test
+	public void testEmployeesOfficePageWithEmployeesShouldShowThemInATable() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		when(employeeService.getEmployeesByOffice(office)).thenReturn(
+				asList(new Employee(1L, "employee1", 1000, office), new Employee(2L, "employee2", 2000, office)));
+		HtmlPage page = this.webClient.getPage("/employees_office/1");
+		assertThat(page.getBody().getTextContent()).doesNotContain("No employee found in this office");
 	}
 }
