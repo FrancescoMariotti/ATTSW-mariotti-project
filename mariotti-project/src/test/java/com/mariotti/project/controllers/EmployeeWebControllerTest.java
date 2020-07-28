@@ -2,6 +2,7 @@ package com.mariotti.project.controllers;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,11 +20,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.EmployeeService;
 import com.mariotti.project.services.OfficeService;
+
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = EmployeeWebController.class)
@@ -96,9 +100,20 @@ public class EmployeeWebControllerTest {
 		Office office = new Office(1L, "office", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(get("/employees_office/1/new_employee")).andExpect(view().name("edit_employee"))
-				.andExpect(model().attribute("office", office)).andExpect(model().attribute("employee", new Employee(office)))
+				.andExpect(model().attribute("office", office))
+				.andExpect(model().attribute("employee", new Employee(office)))
 				.andExpect(model().attribute("message", ""));
 		verifyZeroInteractions(employeeService);
+	}
+
+	@Test
+	public void testPostEmployeeWithIdShouldUpdateExistingEmployee() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",
+				new Employee(1L, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
+		verify(employeeService).updateEmployeeById(1L, new Employee(1L, "test", 1000, office));
 	}
 
 }

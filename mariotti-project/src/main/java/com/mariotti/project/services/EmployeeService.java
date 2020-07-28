@@ -20,4 +20,8 @@ public class EmployeeService {
 		throw new UnsupportedOperationException(TEMP);
 	}
 
+	public void updateEmployeeById(long id, Employee employee) {
+		throw new UnsupportedOperationException(TEMP);
+	}
+
 }

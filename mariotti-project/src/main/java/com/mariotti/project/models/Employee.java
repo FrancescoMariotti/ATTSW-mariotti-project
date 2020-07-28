@@ -19,6 +19,10 @@ public class Employee {
 		this.office = office;
 	}
 
+	public Employee() {
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}
