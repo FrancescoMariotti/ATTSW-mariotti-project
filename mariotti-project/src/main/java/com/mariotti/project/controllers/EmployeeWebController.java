@@ -17,7 +17,7 @@ import com.mariotti.project.services.OfficeService;
 public class EmployeeWebController {
 
 	private static final String MESSAGE = "message";
-	
+
 	@Autowired
 	private OfficeService officeService;
 	@Autowired
@@ -31,5 +31,15 @@ public class EmployeeWebController {
 		model.addAttribute("employees", employees);
 		model.addAttribute(MESSAGE, employees.isEmpty() ? "No employee found in this office" : "");
 		return "employees_office";
+	}
+
+	@GetMapping("/employees_office/{officeId}/edit_employee/{employeeId}")
+	public String editEmployee(@PathVariable long officeId, @PathVariable long employeeId, Model model) {
+		Office officeById = officeService.getOfficeById(officeId);
+		model.addAttribute("office", officeById);
+		Employee employeebyId = employeeService.getEmployeeById(employeeId);
+		model.addAttribute("employee", employeebyId);
+		model.addAttribute(MESSAGE, "No employee found with id: " + employeeId);
+		return "edit_employee";
 	}
 }
