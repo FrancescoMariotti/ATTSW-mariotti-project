@@ -1,6 +1,10 @@
 package com.mariotti.project.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,9 +15,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.mariotti.project.models.Employee;
+import com.mariotti.project.models.Office;
 import com.mariotti.project.services.EmployeeService;
 import com.mariotti.project.services.OfficeService;
-
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = EmployeeWebController.class)
@@ -23,7 +28,7 @@ public class EmployeeWebControllerHtmlTest {
 	private EmployeeService employeeService;
 	@MockBean
 	private OfficeService officeService;
-	
+
 	@Autowired
 	private WebClient webClient;
 
@@ -31,5 +36,14 @@ public class EmployeeWebControllerHtmlTest {
 	public void testEmployeesOfficePageTitle() throws Exception {
 		HtmlPage page = webClient.getPage("/employees_office/1");
 		assertThat(page.getTitleText()).isEqualTo("Employees");
+	}
+
+	@Test
+	public void testEmployeesOfficePageWithoutEmployees() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		when(employeeService.getEmployeesByOffice(office)).thenReturn(Collections.emptyList());
+		HtmlPage page = this.webClient.getPage("/employees_office/1");
+		assertThat(page.getBody().getTextContent()).contains("No employee found in this office");
 	}
 }
