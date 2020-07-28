@@ -16,6 +16,10 @@ import com.mariotti.project.services.OfficeService;
 @Controller
 public class EmployeeWebController {
 
+	private static final String EMPLOYEE_ATTRIBUTE = "employee";
+
+	private static final String OFFICE_ATTRIBUTE = "office";
+
 	private static final String MESSAGE = "message";
 
 	@Autowired
@@ -26,7 +30,7 @@ public class EmployeeWebController {
 	@GetMapping("/employees_office/{officeId}")
 	public String employeesOffice(@PathVariable long officeId, Model model) {
 		Office officeById = officeService.getOfficeById(officeId);
-		model.addAttribute("office", officeById);
+		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
 		List<Employee> employees = employeeService.getEmployeesByOffice(officeById);
 		model.addAttribute("employees", employees);
 		model.addAttribute(MESSAGE, employees.isEmpty() ? "No employee found in this office" : "");
@@ -36,9 +40,9 @@ public class EmployeeWebController {
 	@GetMapping("/employees_office/{officeId}/edit_employee/{employeeId}")
 	public String editEmployee(@PathVariable long officeId, @PathVariable long employeeId, Model model) {
 		Office officeById = officeService.getOfficeById(officeId);
-		model.addAttribute("office", officeById);
+		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
 		Employee employeebyId = employeeService.getEmployeeById(employeeId);
-		model.addAttribute("employee", employeebyId);
+		model.addAttribute(EMPLOYEE_ATTRIBUTE, employeebyId);
 		model.addAttribute(MESSAGE, employeebyId == null ? "No employee found with id: " + employeeId : "");
 		return "edit_employee";
 	}
@@ -46,8 +50,8 @@ public class EmployeeWebController {
 	@GetMapping("/employees_office/{officeId}/new_employee")
 	public String newEmployee(@PathVariable long officeId, Model model) {
 		Office officeById = officeService.getOfficeById(officeId);
-		model.addAttribute("office", officeById);
-		model.addAttribute("employee", new Employee(officeById));
+		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
+		model.addAttribute(EMPLOYEE_ATTRIBUTE, new Employee(officeById));
 		model.addAttribute(MESSAGE, "");
 		return "edit_employee";
 	}
