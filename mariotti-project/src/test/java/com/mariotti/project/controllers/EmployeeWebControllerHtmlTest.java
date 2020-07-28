@@ -84,6 +84,18 @@ public class EmployeeWebControllerHtmlTest {
 		verify(employeeService).updateEmployeeById(1L, new Employee(1L, "modified name", 3000, office));
 	}
 	
+	@Test
+	public void testEditNewEmployee() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		HtmlPage page = this.webClient.getPage("/employees_office/1/new_employee");
+		final HtmlForm form = page.getFormByName("employee_form");
+		form.getInputByName("name").setValueAttribute("new name");
+		form.getInputByName("salary").setValueAttribute("1000");
+		form.getButtonByName("btn_submit").click();
+		verify(employeeService).insertNewEmployee(new Employee(null, "new name", 1000, office));
+	}
+	
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
