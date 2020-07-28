@@ -62,7 +62,11 @@ public class EmployeeWebController {
 		Office officeById = officeService.getOfficeById(officeId);
 		employee.setOffice(officeById);
 		final Long employeeId = employee.getId();
-		employeeService.updateEmployeeById(employeeId, employee);
+		if (employeeId == null) {
+			employeeService.insertNewEmployee(employee);
+		} else {
+			employeeService.updateEmployeeById(employeeId, employee);
+		}
 		return "redirect:/employees_office/" + officeId;
 	}
 }
