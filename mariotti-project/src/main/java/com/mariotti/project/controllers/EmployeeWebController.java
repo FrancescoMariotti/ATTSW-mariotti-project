@@ -39,7 +39,7 @@ public class EmployeeWebController {
 		model.addAttribute("office", officeById);
 		Employee employeebyId = employeeService.getEmployeeById(employeeId);
 		model.addAttribute("employee", employeebyId);
-		model.addAttribute(MESSAGE, "No employee found with id: " + employeeId);
+		model.addAttribute(MESSAGE, employeebyId == null ? "No employee found with id: " + employeeId : "");
 		return "edit_employee";
 	}
 }
