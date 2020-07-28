@@ -70,7 +70,7 @@ public class EmployeeWebControllerTest {
 	}
 	
 	@Test
-	public void testEditEmployeeWhenItIsNotFound() throws Exception {
+	public void testEditEmployeeWhenHeIsNotFound() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		when(employeeService.getEmployeeById(1L)).thenReturn(null);
@@ -78,6 +78,18 @@ public class EmployeeWebControllerTest {
 				.andExpect(model().attribute("office", office))
 				.andExpect(model().attribute("employee", nullValue()))
 				.andExpect(model().attribute("message", "No employee found with id: 1"));
+	}
+	
+	@Test
+	public void testEditEmployeeWhenHeIsFound() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		Employee employee = new Employee(1L, "employee", 1000, office);
+		when(employeeService.getEmployeeById(1L)).thenReturn(employee);
+		mvc.perform(get("/employees_office/1/edit_employee/1")).andExpect(view().name("edit_employee"))
+				.andExpect(model().attribute("office", office))
+				.andExpect(model().attribute("employee", employee))
+				.andExpect(model().attribute("message", ""));
 	}
 
 }
