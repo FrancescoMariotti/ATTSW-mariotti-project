@@ -62,6 +62,13 @@ public class EmployeeWebControllerHtmlTest {
 				+ "1000\n" + "2	" + "employee2	" + "2000");
 	}
 	
+	@Test
+	public void testEditInexistentEmployee() throws Exception {
+		when(employeeService.getEmployeeById(1L)).thenReturn(null);
+		HtmlPage page = this.webClient.getPage("/employees_office/1/edit_employee/1");
+		assertThat(page.getBody().getTextContent()).contains("No employee found with id: 1");
+	}
+	
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
