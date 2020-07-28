@@ -42,4 +42,13 @@ public class EmployeeWebController {
 		model.addAttribute(MESSAGE, employeebyId == null ? "No employee found with id: " + employeeId : "");
 		return "edit_employee";
 	}
+	
+	@GetMapping("/employees_office/{officeId}/new_employee")
+	public String newEmployee(@PathVariable long officeId, Model model) {
+		Office officeById = officeService.getOfficeById(officeId);
+		model.addAttribute("office", officeById);
+		model.addAttribute("employee", new Employee(officeById));
+		model.addAttribute(MESSAGE, "");
+		return "edit_employee";
+	}
 }
