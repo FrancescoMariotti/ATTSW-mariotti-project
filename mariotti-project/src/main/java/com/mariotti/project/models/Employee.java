@@ -7,12 +7,16 @@ public class Employee {
 	private String name;
 	private long salary;
 	private Office office;
-	
+
 	public Employee(Long id, String name, long salary, Office office) {
-		this.id=id;
-		this.name=name;
-		this.salary=salary;
-		this.office=office;
+		this.id = id;
+		this.name = name;
+		this.salary = salary;
+		this.office = office;
+	}
+
+	public Employee(Office office) {
+		this.office = office;
 	}
 
 	public Long getId() {
@@ -69,5 +73,5 @@ public class Employee {
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name) && Objects.equals(office, other.office)
 				&& salary == other.salary;
 	}
-	
+
 }
