@@ -23,5 +23,9 @@ public class EmployeeService {
 	public void updateEmployeeById(long id, Employee employee) {
 		throw new UnsupportedOperationException(TEMP);
 	}
+	
+	public void insertNewEmployee(Employee employee) {
+		throw new UnsupportedOperationException(TEMP);
+	}
 
 }

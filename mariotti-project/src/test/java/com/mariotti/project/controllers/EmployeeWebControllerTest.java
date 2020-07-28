@@ -116,4 +116,13 @@ public class EmployeeWebControllerTest {
 		verify(employeeService).updateEmployeeById(1L, new Employee(1L, "test", 1000, office));
 	}
 
+	@Test
+	public void testPostEmployeeWithNoIdShouldAddNewOffice() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",
+				new Employee(null, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
+		verify(employeeService).insertNewEmployee(new Employee(null, "test", 1000, office));
+	}
 }
