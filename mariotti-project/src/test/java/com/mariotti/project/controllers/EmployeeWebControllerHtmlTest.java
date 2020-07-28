@@ -58,7 +58,11 @@ public class EmployeeWebControllerHtmlTest {
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No employee found in this office");
 		HtmlTable table = page.getHtmlElementById("employee_table");
-		assertThat(table.asText()).isEqualTo("Employees:\n" + "ID	" + "Name	" + "Salary\n" + "1	" + "employee1	"
+		assertThat(removeWindowsCR(table.asText())).isEqualTo("Employees:\n" + "ID	" + "Name	" + "Salary\n" + "1	" + "employee1	"
 				+ "1000\n" + "2	" + "employee2	" + "2000");
+	}
+	
+	private String removeWindowsCR(String s) {
+		return s.replaceAll("\r", "");
 	}
 }
