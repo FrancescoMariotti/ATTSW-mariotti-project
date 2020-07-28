@@ -56,5 +56,6 @@ public class EmployeeWebControllerHtmlTest {
 				asList(new Employee(1L, "employee1", 1000, office), new Employee(2L, "employee2", 2000, office)));
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No employee found in this office");
+		page.getHtmlElementById("employee_table");
 	}
 }
