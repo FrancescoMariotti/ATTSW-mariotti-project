@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
@@ -46,7 +47,7 @@ public class EmployeeWebController {
 		model.addAttribute(MESSAGE, employeebyId == null ? "No employee found with id: " + employeeId : "");
 		return "edit_employee";
 	}
-	
+
 	@GetMapping("/employees_office/{officeId}/new_employee")
 	public String newEmployee(@PathVariable long officeId, Model model) {
 		Office officeById = officeService.getOfficeById(officeId);
@@ -54,5 +55,14 @@ public class EmployeeWebController {
 		model.addAttribute(EMPLOYEE_ATTRIBUTE, new Employee(officeById));
 		model.addAttribute(MESSAGE, "");
 		return "edit_employee";
+	}
+
+	@PostMapping("/employees_office/{officeId}/save_employee")
+	public String saveEmployee(@PathVariable long officeId, Employee employee) {
+		Office officeById = officeService.getOfficeById(officeId);
+		employee.setOffice(officeById);
+		final Long employeeId = employee.getId();
+		employeeService.updateEmployeeById(employeeId, employee);
+		return "redirect:/employees_office/" + officeId;
 	}
 }
