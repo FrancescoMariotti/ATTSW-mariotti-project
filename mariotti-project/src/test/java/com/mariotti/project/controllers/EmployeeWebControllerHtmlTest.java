@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.EmployeeService;
@@ -56,6 +57,8 @@ public class EmployeeWebControllerHtmlTest {
 				asList(new Employee(1L, "employee1", 1000, office), new Employee(2L, "employee2", 2000, office)));
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No employee found in this office");
-		page.getHtmlElementById("employee_table");
+		HtmlTable table = page.getHtmlElementById("employee_table");
+		assertThat(table.asText()).isEqualTo("Employees:\n" + "ID	" + "Name	" + "Salary\n" + "1	" + "employee1	"
+				+ "1000\n" + "2	" + "employee2	" + "2000");
 	}
 }
