@@ -10,6 +10,21 @@
 	</div>
 	<div th:unless="${employees.empty}">
 		<table id="employee_table">
+			<caption>Employees:</caption>
+			<thead>
+				<tr>
+					<th id="id">ID</th>
+					<th id="name">Name</th>
+					<th id="salary">Salary</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee : ${employees}">
+					<td th:text="${employee.id}"></td>
+					<td th:text="${employee.name}"></td>
+					<td th:text="${employee.salary}"></td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 </body>
