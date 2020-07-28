@@ -1,6 +1,7 @@
 package com.mariotti.project.controllers;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -66,6 +67,17 @@ public class EmployeeWebControllerTest {
 		mvc.perform(get("/employees_office/1")).andExpect(view().name("employees_office"))
 				.andExpect(model().attribute("employees", Collections.emptyList()))
 				.andExpect(model().attribute("message", "No employee found in this office"));
+	}
+	
+	@Test
+	public void testEditEmployeeWhenItIsNotFound() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		when(employeeService.getEmployeeById(1L)).thenReturn(null);
+		mvc.perform(get("/employees_office/1/edit_employee/1")).andExpect(view().name("edit_employee"))
+				.andExpect(model().attribute("office", office))
+				.andExpect(model().attribute("employee", nullValue()))
+				.andExpect(model().attribute("message", "No employee found with id: 1"));
 	}
 
 }
