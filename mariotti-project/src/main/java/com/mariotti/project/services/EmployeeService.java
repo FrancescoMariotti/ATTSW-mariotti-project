@@ -28,7 +28,7 @@ public class EmployeeService {
 		List<Employee> employeesByOffice = new LinkedList<>();
 		for (long i = 1L; i <= employees.size(); i++) {
 			Employee element = employees.get(i);
-			if (element.getOffice().equals(office)) {
+			if (element.getOffice().getId()==office.getId()) {
 				employeesByOffice.add(element);
 			}
 		}

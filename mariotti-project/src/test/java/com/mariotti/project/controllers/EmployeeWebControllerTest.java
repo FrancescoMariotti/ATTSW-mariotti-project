@@ -119,7 +119,7 @@ public class EmployeeWebControllerTest {
 	}
 
 	@Test
-	public void testPostEmployeeWithNoIdShouldAddNewOffice() throws Exception {
+	public void testPostEmployeeWithNoIdShouldAddNewEmployee() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",

@@ -3,7 +3,6 @@ package com.mariotti.project.controllers;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static java.util.Arrays.asList;
 
@@ -19,10 +18,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
+
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = OfficeWebController.class)
@@ -78,21 +80,28 @@ public class OfficeWebControllerTest {
 	@Test
 	public void testEditNewOffice() throws Exception {
 		mvc.perform(get("/new_office")).andExpect(view().name("edit_office"))
-				.andExpect(model().attribute("office", new Office())).andExpect(model().attribute("message", ""));
+				.andExpect(model().attribute("office", new Office(new ArrayList<Employee>()))).andExpect(model().attribute("message", ""));
 		verifyZeroInteractions(officeService);
 	}
 
 	@Test
 	public void testPostOfficeWithIdShouldUpdateExistingOffice() throws Exception {
-		mvc.perform(post("/save_office").param("id", "1").param("name", "test"))
-				.andExpect(view().name("redirect:/"));
-		verify(officeService).updateOfficeById(1L, new Office(1L, "test", null));
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", new Office(1L, "test", office.getEmployees())))
+				.andExpect(MockMvcResultMatchers.status().isFound())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
+		verify(officeService).updateOfficeById(1L, new Office(1L, "test", office.getEmployees()));
 	}
 
 	@Test
 	public void testPostOfficeWithNoIdShouldAddNewOffice() throws Exception {
-		mvc.perform(post("/save_office").param("name", "test")).andExpect(view().name("redirect:/"));
-		verify(officeService).insertNewOffice(new Office(null, "test", null));
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", new Office(null, "test", new ArrayList<Employee>())))
+				.andExpect(MockMvcResultMatchers.status().isFound())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
+		verify(officeService).insertNewOffice(new Office(null, "test", new ArrayList<Employee>()));
 	}
 
 }

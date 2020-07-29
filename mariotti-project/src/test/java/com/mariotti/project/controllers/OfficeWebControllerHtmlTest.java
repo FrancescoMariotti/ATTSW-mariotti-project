@@ -70,12 +70,13 @@ public class OfficeWebControllerHtmlTest {
 
 	@Test
 	public void testEditExistentOffice() throws Exception {
+		Office office = new Office(1L, "original name", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1)).thenReturn(new Office(1L, "original name", new ArrayList<Employee>()));
 		HtmlPage page = this.webClient.getPage("/edit_office/1");
 		final HtmlForm form = page.getFormByName("office_form");
 		form.getInputByValue("original name").setValueAttribute("modified name");
 		form.getButtonByName("btn_submit").click();
-		verify(officeService).updateOfficeById(1L, new Office(1L, "modified name", null));
+		verify(officeService).updateOfficeById(1L, new Office(1L, "modified name", office.getEmployees()));
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class OfficeWebControllerHtmlTest {
 		final HtmlForm form = page.getFormByName("office_form");
 		form.getInputByName("name").setValueAttribute("new name");
 		form.getButtonByName("btn_submit").click();
-		verify(officeService).insertNewOffice(new Office(null, "new name", null));
+		verify(officeService).insertNewOffice(new Office(null, "new name", new ArrayList<Employee>()));
 	}
 
 	@Test
