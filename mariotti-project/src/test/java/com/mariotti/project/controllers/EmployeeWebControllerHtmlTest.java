@@ -110,6 +110,14 @@ public class EmployeeWebControllerHtmlTest {
 		assertThat(page.getAnchorByText("New employee").getHrefAttribute())
 				.isEqualTo("/employees_office/1/new_employee");
 	}
+	
+	@Test
+	public void testEmployeesOfficeShouldHaveLinkToHomePage() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		HtmlPage page = this.webClient.getPage("/employees_office/1");
+		page.getAnchorByHref("/");
+	}
 
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
