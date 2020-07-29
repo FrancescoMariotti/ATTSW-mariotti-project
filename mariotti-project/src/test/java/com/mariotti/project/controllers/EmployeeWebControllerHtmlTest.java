@@ -62,17 +62,21 @@ public class EmployeeWebControllerHtmlTest {
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No employee found in this office");
 		HtmlTable table = page.getHtmlElementById("employee_table");
-		assertThat(removeWindowsCR(table.asText())).isEqualTo("Employees:\n" + "ID	" + "Name	" + "Salary\n" + "1	" + "employee1	"
-				+ "1000\n" + "2	" + "employee2	" + "2000");
+		assertThat(removeWindowsCR(table.asText())).isEqualTo("Employees:\n" 
+				+ "ID	" + "Name	" + "Salary\n" 
+				+ "1	" + "employee1	" + "1000" + "	Edit\n" 
+				+ "2	" + "employee2	" + "2000" + "	Edit");
+		page.getAnchorByHref("/employees_office/1/edit_employee/1");
+		page.getAnchorByHref("/employees_office/1/edit_employee/2");
 	}
-	
+
 	@Test
 	public void testEditInexistentEmployee() throws Exception {
 		when(employeeService.getEmployeeById(1L)).thenReturn(null);
 		HtmlPage page = this.webClient.getPage("/employees_office/1/edit_employee/1");
 		assertThat(page.getBody().getTextContent()).contains("No employee found with id: 1");
 	}
-	
+
 	@Test
 	public void testEditExistentEmployee() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<Employee>());
@@ -85,7 +89,7 @@ public class EmployeeWebControllerHtmlTest {
 		form.getButtonByName("btn_submit").click();
 		verify(employeeService).updateEmployeeById(1L, new Employee(1L, "modified name", 3000, office));
 	}
-	
+
 	@Test
 	public void testEditNewEmployee() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<Employee>());
@@ -97,15 +101,16 @@ public class EmployeeWebControllerHtmlTest {
 		form.getButtonByName("btn_submit").click();
 		verify(employeeService).insertNewEmployee(new Employee(null, "new name", 1000, office));
 	}
-	
+
 	@Test
 	public void testEmployeesOfficePageShouldHaveALinkForAddingNewEmployee() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<Employee>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
-		assertThat(page.getAnchorByText("New employee").getHrefAttribute()).isEqualTo("/employees_office/1/new_employee");
+		assertThat(page.getAnchorByText("New employee").getHrefAttribute())
+				.isEqualTo("/employees_office/1/new_employee");
 	}
-	
+
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
