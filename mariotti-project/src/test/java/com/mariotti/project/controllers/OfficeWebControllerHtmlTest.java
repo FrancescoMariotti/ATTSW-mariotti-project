@@ -16,7 +16,6 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
-import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
 
@@ -48,8 +47,8 @@ public class OfficeWebControllerHtmlTest {
 
 	@Test
 	public void testHomePageWithOfficesShouldShowThemInATable() throws Exception {
-		when(officeService.getAllOffices()).thenReturn(asList(new Office(1L, "office1", new ArrayList<Employee>()),
-				new Office(2L, "office2", new ArrayList<Employee>())));
+		when(officeService.getAllOffices()).thenReturn(asList(new Office(1L, "office1", new ArrayList<>()),
+				new Office(2L, "office2", new ArrayList<>())));
 		HtmlPage page = this.webClient.getPage("/");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No office found");
 		HtmlTable table = page.getHtmlElementById("office_table");
@@ -70,8 +69,8 @@ public class OfficeWebControllerHtmlTest {
 
 	@Test
 	public void testEditExistentOffice() throws Exception {
-		Office office = new Office(1L, "original name", new ArrayList<Employee>());
-		when(officeService.getOfficeById(1)).thenReturn(new Office(1L, "original name", new ArrayList<Employee>()));
+		Office office = new Office(1L, "original name", new ArrayList<>());
+		when(officeService.getOfficeById(1)).thenReturn(new Office(1L, "original name", new ArrayList<>()));
 		HtmlPage page = this.webClient.getPage("/edit_office/1");
 		final HtmlForm form = page.getFormByName("office_form");
 		form.getInputByValue("original name").setValueAttribute("modified name");
@@ -85,7 +84,7 @@ public class OfficeWebControllerHtmlTest {
 		final HtmlForm form = page.getFormByName("office_form");
 		form.getInputByName("name").setValueAttribute("new name");
 		form.getButtonByName("btn_submit").click();
-		verify(officeService).insertNewOffice(new Office(null, "new name", new ArrayList<Employee>()));
+		verify(officeService).insertNewOffice(new Office(null, "new name", new ArrayList<>()));
 	}
 
 	@Test

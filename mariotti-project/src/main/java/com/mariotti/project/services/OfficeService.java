@@ -15,10 +15,9 @@ import com.mariotti.project.models.Office;
 public class OfficeService {
 
 	private Map<Long, Office> offices = new LinkedHashMap<>();
-	private ArrayList<Employee> employees;
+	private ArrayList<Employee> employees = new ArrayList<>();
 
 	public OfficeService() {
-		this.employees = new ArrayList<Employee>();
 		offices.put(1L, new Office(1L, "shop office", this.employees));
 		offices.put(2L, new Office(2L, "production office", this.employees));
 	}

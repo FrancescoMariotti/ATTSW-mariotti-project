@@ -38,7 +38,7 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEmployeesOfficePageTitle() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		HtmlPage page = webClient.getPage("/employees_office/1");
 		assertThat(page.getTitleText()).isEqualTo("Employees");
@@ -46,7 +46,7 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEmployeesOfficePageWithoutEmployees() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		when(employeeService.getEmployeesByOffice(office)).thenReturn(Collections.emptyList());
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
@@ -55,7 +55,7 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEmployeesOfficePageWithEmployeesShouldShowThemInATable() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		when(employeeService.getEmployeesByOffice(office)).thenReturn(
 				asList(new Employee(1L, "employee1", 1000, office), new Employee(2L, "employee2", 2000, office)));
@@ -79,7 +79,7 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEditExistentEmployee() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		when(employeeService.getEmployeeById(1)).thenReturn(new Employee(1L, "original name", 1000, office));
 		HtmlPage page = this.webClient.getPage("/employees_office/1/edit_employee/1");
@@ -92,7 +92,7 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEditNewEmployee() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		HtmlPage page = this.webClient.getPage("/employees_office/1/new_employee");
 		final HtmlForm form = page.getFormByName("employee_form");
@@ -104,7 +104,7 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEmployeesOfficePageShouldHaveALinkForAddingNewEmployee() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
 		assertThat(page.getAnchorByText("New employee").getHrefAttribute())
@@ -113,10 +113,10 @@ public class EmployeeWebControllerHtmlTest {
 	
 	@Test
 	public void testEmployeesOfficeShouldHaveLinkToHomePage() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		HtmlPage page = this.webClient.getPage("/employees_office/1");
-		page.getAnchorByHref("/");
+		assertThat(page.getAnchorByText("Home page").getHrefAttribute()).isEqualTo("/");
 	}
 
 	private String removeWindowsCR(String s) {

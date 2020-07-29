@@ -13,9 +13,6 @@ import com.mariotti.project.models.Office;
 public class EmployeeService {
 	private Map<Long, Employee> employees = new LinkedHashMap<>();
 
-	public EmployeeService() {
-	}
-
 	public List<Employee> getAllEmployees() {
 		return new LinkedList<>(employees.values());
 	}
@@ -28,7 +25,7 @@ public class EmployeeService {
 		List<Employee> employeesByOffice = new LinkedList<>();
 		for (long i = 1L; i <= employees.size(); i++) {
 			Employee element = employees.get(i);
-			if (element.getOffice().getId()==office.getId()) {
+			if (element.getOffice().getId().equals(office.getId())) {
 				employeesByOffice.add(element);
 			}
 		}

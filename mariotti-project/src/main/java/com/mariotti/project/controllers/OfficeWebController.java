@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
 
@@ -40,7 +39,7 @@ public class OfficeWebController {
 
 	@GetMapping("/new_office")
 	public String newOffice(Model model) {
-		model.addAttribute("office", new Office(new ArrayList<Employee>()));
+		model.addAttribute("office", new Office(new ArrayList<>()));
 		model.addAttribute(MESSAGE, "");
 		return "edit_office";
 	}
@@ -49,7 +48,7 @@ public class OfficeWebController {
 	public String saveOffice(Office office) {
 		final Long id = office.getId();
 		if (id == null) {
-			office.setEmployees(new ArrayList<Employee>());
+			office.setEmployees(new ArrayList<>());
 			officeService.insertNewOffice(office);
 		} else {
 			Office existent = officeService.getOfficeById(id);

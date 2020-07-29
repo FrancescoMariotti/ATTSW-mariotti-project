@@ -42,7 +42,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testStatus200() throws Exception {
-		Office office = new Office(1L, "test", new ArrayList<Employee>());
+		Office office = new Office(1L, "test", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(get("/employees_office/1")).andExpect(status().is2xxSuccessful())
 				.andExpect(model().attribute("office", office));
@@ -50,7 +50,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testReturnEmployeesOfficeView() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		ModelAndViewAssert.assertViewName(mvc.perform(get("/employees_office/1")).andReturn().getModelAndView(),
 				"employees_office");
@@ -58,7 +58,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testEmployeesOfficeViewShowsEmployees() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		List<Employee> employees = asList(new Employee(1L, "test", 1000, office));
 		when(employeeService.getEmployeesByOffice(office)).thenReturn(employees);
@@ -68,7 +68,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testEmployeesOfficeViewWithNoEmployeesShowsMessage() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		when(employeeService.getEmployeesByOffice(office)).thenReturn(Collections.emptyList());
 		mvc.perform(get("/employees_office/1")).andExpect(view().name("employees_office"))
@@ -78,7 +78,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testEditEmployeeWhenHeIsNotFound() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		when(employeeService.getEmployeeById(1L)).thenReturn(null);
 		mvc.perform(get("/employees_office/1/edit_employee/1")).andExpect(view().name("edit_employee"))
@@ -88,7 +88,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testEditEmployeeWhenHeIsFound() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		Employee employee = new Employee(1L, "employee", 1000, office);
 		when(employeeService.getEmployeeById(1L)).thenReturn(employee);
@@ -99,7 +99,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testEditNewEmployee() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(get("/employees_office/1/new_employee")).andExpect(view().name("edit_employee"))
 				.andExpect(model().attribute("office", office))
@@ -110,7 +110,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testPostEmployeeWithIdShouldUpdateExistingEmployee() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",
 				new Employee(1L, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
@@ -120,7 +120,7 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testPostEmployeeWithNoIdShouldAddNewEmployee() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",
 				new Employee(null, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
