@@ -5,6 +5,9 @@
 <title>Employees</title>
 </head>
 <body>
+	<div>
+		<a th:href="@{/employees_office/} + ${office.id} + @{/new_employee}">New employee</a>
+	</div>
 	<div th:if="${employees.empty}">
 		<div>No employee found in this office</div>
 	</div>

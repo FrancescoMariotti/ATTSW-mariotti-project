@@ -38,6 +38,8 @@ public class EmployeeWebControllerHtmlTest {
 
 	@Test
 	public void testEmployeesOfficePageTitle() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
 		HtmlPage page = webClient.getPage("/employees_office/1");
 		assertThat(page.getTitleText()).isEqualTo("Employees");
 	}
