@@ -96,6 +96,14 @@ public class EmployeeWebControllerHtmlTest {
 		verify(employeeService).insertNewEmployee(new Employee(null, "new name", 1000, office));
 	}
 	
+	@Test
+	public void testEmployeesOfficePageShouldHaveALinkForAddingNewEmployee() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		HtmlPage page = this.webClient.getPage("/employees_office/1");
+		assertThat(page.getAnchorByText("New employee").getHrefAttribute()).isEqualTo("/employees_office/1/new_employee");
+	}
+	
 	private String removeWindowsCR(String s) {
 		return s.replaceAll("\r", "");
 	}
