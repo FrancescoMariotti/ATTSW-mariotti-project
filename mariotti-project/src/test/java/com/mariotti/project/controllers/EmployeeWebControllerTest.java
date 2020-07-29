@@ -50,6 +50,8 @@ public class EmployeeWebControllerTest {
 
 	@Test
 	public void testReturnEmployeesOfficeView() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<Employee>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
 		ModelAndViewAssert.assertViewName(mvc.perform(get("/employees_office/1")).andReturn().getModelAndView(),
 				"employees_office");
 	}
