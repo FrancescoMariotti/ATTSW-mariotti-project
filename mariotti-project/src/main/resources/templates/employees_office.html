@@ -6,6 +6,9 @@
 </head>
 <body>
 	<div>
+		<a th:href="@{/}">Home page</a>
+	</div>
+	<div>
 		<a th:href="@{/employees_office/} + ${office.id} + @{/new_employee}">New employee</a>
 	</div>
 	<div th:if="${employees.empty}">
