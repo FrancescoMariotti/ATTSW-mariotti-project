@@ -141,7 +141,6 @@
 				<version>0.27.2</version>
 				<extensions>true</extensions>
 				<configuration>
-					<!--<dockerHost>tcp://0.0.0.0:1111</dockerHost> -->
 					<images>
 						<image>
 							<alias>database</alias>
