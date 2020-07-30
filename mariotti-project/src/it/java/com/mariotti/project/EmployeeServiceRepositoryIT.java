@@ -35,7 +35,7 @@ public class EmployeeServiceRepositoryIT {
 	public void testEmployeeServiceShallInsertIntoEmployeeRepository() {
 		Office office = officeRepository.save(new Office(null, "office", new ArrayList<>()));
 		Employee employee = employeeService.insertNewEmployee(new Employee(null, "test", 1000, office));
-		assertThat(employeeRepository.findById(employee.getId()).isPresent()).isTrue();
+		assertThat(employeeRepository.findById(employee.getId())).isPresent();
 	}
 
 	@Test
