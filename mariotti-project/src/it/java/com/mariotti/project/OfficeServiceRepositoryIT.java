@@ -30,7 +30,7 @@ public class OfficeServiceRepositoryIT {
 	@Test
 	public void testOfficeServiceShallInsertIntoOfficeRepository() {
 		Office office = officeService.insertNewOffice(new Office(null, "test", new ArrayList<>()));
-		officeRepository.findById(office.getId()).isPresent();
+		assertThat(officeRepository.findById(office.getId()).isPresent()).isTrue();
 	}
 	
 	@Test
