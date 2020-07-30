@@ -10,7 +10,10 @@ git:
 addons:
   sonarcloud:
     organization: francescomariotti
-
+    
+services:
+  - docker
+  
 install: true
 
 cache:
