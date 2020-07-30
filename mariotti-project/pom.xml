@@ -147,7 +147,7 @@
 							<name>mysql:5.7</name>
 							<run>
 								<wait>
-									<log>mysql: ready for connections</log>
+									<log>mysqld: ready for connections</log>
 									<time>20000</time>
 								</wait>
 								<env>
