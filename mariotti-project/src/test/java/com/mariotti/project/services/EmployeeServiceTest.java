@@ -29,16 +29,16 @@ public class EmployeeServiceTest {
 
 	@Test
 	public void test_getAllEmployees() {
-		Employee firstEmployee = new Employee(1L, "first", 1000, new Office(1L, "office1", new ArrayList<Employee>()));
+		Employee firstEmployee = new Employee(1L, "first", 1000, new Office(1L, "office1", new ArrayList<>()));
 		Employee secondEmployee = new Employee(2L, "second", 1000,
-				new Office(2L, "office2", new ArrayList<Employee>()));
+				new Office(2L, "office2", new ArrayList<>()));
 		when(employeeRepository.findAll()).thenReturn(Arrays.asList(new Employee[] { firstEmployee, secondEmployee }));
 		assertThat(employeeService.getAllEmployees()).containsExactly(firstEmployee, secondEmployee);
 	}
 
 	@Test
 	public void test_getEmployeesByOffice() {
-		Office office1 = new Office(1L, "office1", new ArrayList<Employee>());
+		Office office1 = new Office(1L, "office1", new ArrayList<>());
 		Employee employee1 = new Employee(1L, "first", 1000, office1);
 		Employee employee2 = new Employee(2L, "second", 1000, office1);
 		when(employeeRepository.findByOffice(office1)).thenReturn(Arrays.asList(new Employee[] { employee1, employee2 }));
@@ -53,7 +53,7 @@ public class EmployeeServiceTest {
 
 	@Test
 	public void test_getEmployeeById_Found() {
-		Employee employee = new Employee(1L, "employee", 1000, new Office(1L, "office", new ArrayList<Employee>()));
+		Employee employee = new Employee(1L, "employee", 1000, new Office(1L, "office", new ArrayList<>()));
 		when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
 		assertThat(employeeService.getEmployeeById(1)).isSameAs(employee);
 	}
@@ -61,7 +61,7 @@ public class EmployeeServiceTest {
 	@Test
 	public void test_insertNewEmployee() {
 		Employee toSave = spy(new Employee(99L, "", 0, null));
-		Employee saved = new Employee(1L, "saved", 1000, new Office(1L, "office", new ArrayList<Employee>()));
+		Employee saved = new Employee(1L, "saved", 1000, new Office(1L, "office", new ArrayList<>()));
 		when(employeeRepository.save(any(Employee.class))).thenReturn(saved);
 		Employee result = employeeService.insertNewEmployee(toSave);
 		assertThat(result).isSameAs(saved);
@@ -73,7 +73,7 @@ public class EmployeeServiceTest {
 	@Test
 	public void test_updateEmployeeById() {
 		Employee replacement = spy(new Employee(null, "employee", 0, null));
-		Employee replaced = new Employee(1L, "saved", 1000, new Office(1L, "office", new ArrayList<Employee>()));
+		Employee replaced = new Employee(1L, "saved", 1000, new Office(1L, "office", new ArrayList<>()));
 		when(employeeRepository.save(any(Employee.class))).thenReturn(replaced);
 		Employee result = employeeService.updateEmployeeById(1L, replacement);
 		assertThat(result).isSameAs(replaced);

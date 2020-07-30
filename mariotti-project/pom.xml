@@ -32,7 +32,6 @@
 		</sonar.sources>
 		<sonar.coverage.exclusions>
 			**/*Application.*,
-			**/repositories/*, <!-- Temporary, just for this branch -->
 			**/models/*
 		</sonar.coverage.exclusions>
 		<sonar.issue.ignore.multicriteria>e11</sonar.issue.ignore.multicriteria>
@@ -171,7 +170,6 @@
 						<configuration>
 							<excludes>
 								<exclude>**/*Application.*</exclude>
-								<exclude>**/repositories/*</exclude> <!-- Temporary, just for this branch -->
 								<exclude>**/models/*</exclude>
 							</excludes>
 						</configuration>
