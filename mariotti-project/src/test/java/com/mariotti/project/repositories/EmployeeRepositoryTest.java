@@ -28,7 +28,7 @@ public class EmployeeRepositoryTest {
 
 	@Test
 	public void testFindAllEmployees() {
-		Office office = new Office(null, "office", new ArrayList<Employee>());
+		Office office = new Office(null, "office", new ArrayList<>());
 		manager.persistFlushFind(office);
 		Employee employee = new Employee(null, "employee", 1000, office);
 		Employee saved = manager.persistFlushFind(employee);
@@ -38,8 +38,8 @@ public class EmployeeRepositoryTest {
 
 	@Test
 	public void testFindByOffice() {
-		Office office1 = new Office(null, "office1", new ArrayList<Employee>());
-		Office office2 = new Office(null, "office2", new ArrayList<Employee>());
+		Office office1 = new Office(null, "office1", new ArrayList<>());
+		Office office2 = new Office(null, "office2", new ArrayList<>());
 		manager.persistFlushFind(office1);
 		manager.persistFlushFind(office2);
 		Employee employee1 = new Employee(null, "employee1", 1000, office1);
@@ -52,8 +52,8 @@ public class EmployeeRepositoryTest {
 
 	@Test
 	public void testFindAllByOffice() {
-		Office office1 = new Office(null, "office1", new ArrayList<Employee>());
-		Office office2 = new Office(null, "office2", new ArrayList<Employee>());
+		Office office1 = new Office(null, "office1", new ArrayList<>());
+		Office office2 = new Office(null, "office2", new ArrayList<>());
 		manager.persistFlushFind(office1);
 		manager.persistFlushFind(office2);
 		Employee employee1 = new Employee(null, "employee1", 1000, office1);
@@ -62,5 +62,15 @@ public class EmployeeRepositoryTest {
 		manager.persistFlushFind(employee2);
 		List<Employee> found = repository.findAllByOffice(office1);
 		assertThat(found).containsExactly(saved);
+	}
+	
+	@Test
+	public void testFindByName() {
+		Office office = new Office(null, "office", new ArrayList<>());
+		manager.persistFlushFind(office);
+		Employee employee = new Employee(null, "employee", 1000, office);
+		Employee saved = manager.persistFlushFind(employee);
+		Employee found = repository.findByName(employee.getName());
+		assertThat(found).isEqualTo(saved);
 	}
 }

@@ -14,5 +14,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 	Employee findByOffice(Office office);
 
 	List<Employee> findAllByOffice(Office office);
+	
+	Employee findByName(String name);
 
 }
