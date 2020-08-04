@@ -63,4 +63,14 @@ public class EmployeeRepositoryTest {
 		List<Employee> found = repository.findByOffice(office1);
 		assertThat(found).containsExactly(saved);
 	}
+	
+	@Test
+	public void testFindByName() {
+		Office office = new Office(null, "office", new ArrayList<>());
+		manager.persistFlushFind(office);
+		Employee employee = new Employee(null, "employee", 1000, office);
+		Employee saved = manager.persistFlushFind(employee);
+		Employee found = repository.findByName(employee.getName());
+		assertThat(found).isEqualTo(saved);
+	}
 }
