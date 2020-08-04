@@ -9,27 +9,32 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity(name="Employee")
-@Table(name="employee")
+@Entity(name = "Employee")
+@Table(name = "employee")
 public class Employee {
-	
-	@Id @GeneratedValue
+
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	private long salary;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Office office;
-	
+
 	public Employee(Long id, String name, long salary, Office office) {
-		this.id=id;
-		this.name=name;
-		this.salary=salary;
-		this.office=office;
+		this.id = id;
+		this.name = name;
+		this.salary = salary;
+		this.office = office;
+	}
+
+	public Employee(Office office) {
+		this.office = office;
 	}
 
 	public Employee() {
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -84,5 +89,5 @@ public class Employee {
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name) && Objects.equals(office, other.office)
 				&& salary == other.salary;
 	}
-	
+
 }

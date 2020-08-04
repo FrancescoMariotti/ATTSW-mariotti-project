@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Offices</title>
+</head>
+<body>
+	<h1>Edit Office</h1>
+	<div th:unless="${message.empty}">
+		<span th:text="${message}"></span>
+	</div>
+	<div th:if="${message.empty}">
+		<form name="office_form" action="#" th:action="@{/save_office}"
+			th:object="${office}" method="post">
+			<input type="hidden" th:field="*{id}" />
+			<p>
+				Name: <input type="text" th:field="*{name}" />
+			</p>
+			<button type="submit" name="btn_submit">Save</button>
+		</form>
+	</div>
+</body>
+</html>

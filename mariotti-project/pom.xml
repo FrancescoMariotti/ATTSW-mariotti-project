@@ -78,6 +78,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.sourceforge.htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.florianlopes</groupId>
+			<artifactId>spring-mvc-test-utils</artifactId>
+			<version>1.0.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
@@ -190,9 +201,11 @@
 					<configuration>
 						<targetClasses>
 							<param>com.mariotti.project.services*</param>
+							<param>com.mariotti.project.controllers*</param>
 						</targetClasses>
 						<targetTests>
 							<param>com.mariotti.project.services.*</param>
+							<param>com.mariotti.project.controllers.*</param>
 						</targetTests>
 						<mutators>
 							<mutator>DEFAULTS</mutator>

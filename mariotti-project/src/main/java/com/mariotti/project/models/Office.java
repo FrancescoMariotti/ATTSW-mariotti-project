@@ -26,6 +26,10 @@ public class Office {
 		this.name = name;
 		this.employees = employees;
 	}
+
+	public Office(Collection<Employee> employees) {
+		this.employees=employees;
+	}
 	
 	public Office() {
 	}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Employees</title>
+</head>
+<body>
+	<div>
+		<a th:href="@{/}">Home page</a>
+	</div>
+	<div>
+		<a th:href="@{/employees_office/} + ${office.id} + @{/new_employee}">New employee</a>
+	</div>
+	<div th:if="${employees.empty}">
+		<div>No employee found in this office</div>
+	</div>
+	<div th:unless="${employees.empty}">
+		<table id="employee_table">
+			<caption>Employees:</caption>
+			<thead>
+				<tr>
+					<th id="id">ID</th>
+					<th id="name">Name</th>
+					<th id="salary">Salary</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee : ${employees}">
+					<td th:text="${employee.id}"></td>
+					<td th:text="${employee.name}"></td>
+					<td th:text="${employee.salary}"></td>
+					<td><a th:href="@{/employees_office/} + ${office.id} + @{/edit_employee/} + ${employee.id}">Edit</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
