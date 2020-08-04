@@ -49,8 +49,7 @@
 			java:S4684
 		</sonar.issue.ignore.multicriteria.e12.ruleKey>
 		<sonar.issue.ignore.multicriteria.e12.resourceKey>
-			**/*EmployeeWebController.java,
-			**/*OfficeWebController.java
+			**/*Controller.java
 		</sonar.issue.ignore.multicriteria.e12.resourceKey>
 	</properties>
 
