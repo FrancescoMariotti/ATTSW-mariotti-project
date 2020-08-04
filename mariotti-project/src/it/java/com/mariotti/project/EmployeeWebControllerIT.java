@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -59,6 +60,29 @@ public class EmployeeWebControllerIT {
 		assertThat(driver.findElement(By.id("employee_table")).getText()).contains("employee", "1000", "Edit");
 		driver.findElement(By.cssSelector(
 				"a[href*='/employees_office/" + office.getId() + "/edit_employee/" + employee.getId() + "']"));
+	}
+
+	@Test
+	public void testEditEmployeePageNewEmployee() throws Exception {
+		driver.get(url + "/new_employee");
+		driver.findElement(By.name("name")).sendKeys("another employee");
+		driver.findElement(By.name("salary")).sendKeys("1000");
+		driver.findElement(By.name("btn_submit")).click();
+		assertThat(employeeRepository.findByName("another employee").getSalary()).isEqualTo(1000L);
+	}
+
+	@Test
+	public void testEditEmployeePageUpdateEmployee() throws Exception {
+		Employee employee = employeeRepository.save(new Employee(null, "old employee", 1000, office));
+		driver.get(url + "/edit_employee/" + employee.getId());
+		final WebElement nameBox = driver.findElement(By.name("name"));
+		nameBox.clear();
+		nameBox.sendKeys("modified employee");
+		final WebElement salaryBox = driver.findElement(By.name("salary"));
+		salaryBox.clear();
+		salaryBox.sendKeys("2000");
+		driver.findElement(By.name("btn_submit")).click();
+		assertThat(employeeRepository.findByName("modified employee").getSalary()).isEqualTo(2000L);
 	}
 
 }
