@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Offices</title>
+</head>
+<body>
+	<div>
+		<a th:href="@{/new_office}">New office</a>
+	</div>
+	<!-- IF NO OFFICE IS PRESENT -->
+	<div th:if="${offices.empty}">
+		<div>No office found</div>
+	</div>
+	<!-- ELSE -->
+	<div th:unless="${offices.empty}">
+		<table id="office_table">
+			<caption>Offices:</caption>
+			<thead>
+				<tr>
+					<th id="id">ID</th>
+					<th id="name">Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="office : ${offices}">
+
+					<td th:text="${office.id}"></td>
+					<td th:text="${office.name}"></td>
+					<td><a th:href="@{/employees_office/} + ${office.id}">View</a></td>
+					<td><a th:href="@{'/edit_office/' + ${office.id}}">Edit</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

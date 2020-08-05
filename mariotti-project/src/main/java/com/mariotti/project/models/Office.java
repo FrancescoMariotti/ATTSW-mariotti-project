@@ -3,15 +3,35 @@ package com.mariotti.project.models;
 import java.util.Collection;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity(name = "Office")
+@Table(name = "office")
 public class Office {
+
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
+	@OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Employee> employees;
-	
+
 	public Office(Long id, String name, Collection<Employee> employees) {
-		this.id=id;
-		this.name=name;
+		this.id = id;
+		this.name = name;
+		this.employees = employees;
+	}
+
+	public Office(Collection<Employee> employees) {
 		this.employees=employees;
+	}
+	
+	public Office() {
 	}
 
 	public Long getId() {
@@ -60,5 +80,5 @@ public class Office {
 		return Objects.equals(employees, other.employees) && Objects.equals(id, other.id)
 				&& Objects.equals(name, other.name);
 	}
-	
+
 }

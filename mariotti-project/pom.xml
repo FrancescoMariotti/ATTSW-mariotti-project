@@ -34,7 +34,7 @@
 			**/*Application.*,
 			**/models/*
 		</sonar.coverage.exclusions>
-		<sonar.issue.ignore.multicriteria>e11</sonar.issue.ignore.multicriteria>
+		<sonar.issue.ignore.multicriteria>e11,e12</sonar.issue.ignore.multicriteria>
 		<!-- Disable "Tests should include assertions" because ApplicationTests 
 			does not perform assertions -->
 		<sonar.issue.ignore.multicriteria.e11.ruleKey>
@@ -43,6 +43,14 @@
 		<sonar.issue.ignore.multicriteria.e11.resourceKey>
 			**/*ApplicationTests.java
 		</sonar.issue.ignore.multicriteria.e11.resourceKey>
+		<!-- Ignore 'Persistent entities should not be used as arguments of "@RequestMapping" 
+			methods' -->
+		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+			java:S4684
+		</sonar.issue.ignore.multicriteria.e12.ruleKey>
+		<sonar.issue.ignore.multicriteria.e12.resourceKey>
+			**/*Controller.java
+		</sonar.issue.ignore.multicriteria.e12.resourceKey>
 	</properties>
 
 	<dependencies>
@@ -62,7 +70,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -71,11 +78,37 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.htmlunit</groupId>
+			<artifactId>htmlunit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.florianlopes</groupId>
+			<artifactId>spring-mvc-test-utils</artifactId>
+			<version>1.0.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>htmlunit-driver</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -131,7 +164,75 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.27.2</version>
+				<extensions>true</extensions>
+				<configuration>
+					<images>
+						<image>
+							<alias>database</alias>
+							<name>mysql:5.7</name>
+							<run>
+								<wait>
+									<log>mysqld: ready for connections</log>
+									<time>20000</time>
+								</wait>
+								<env>
+									<MYSQL_ROOT_PASSWORD>1234</MYSQL_ROOT_PASSWORD>
+									<MYSQL_DATABASE>app_db</MYSQL_DATABASE>
+									<MYSQL_USER>mariotti</MYSQL_USER>
+									<MYSQL_PASSWORD>1234</MYSQL_PASSWORD>
+								</env>
+								<ports>
+									<port>3306:3306</port>
+								</ports>
+							</run>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker:start</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>docker:stop</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>1.4.10</version>
+					<configuration>
+						<targetClasses>
+							<param>com.mariotti.project.services*</param>
+							<param>com.mariotti.project.controllers*</param>
+						</targetClasses>
+						<targetTests>
+							<param>com.mariotti.project.services.*</param>
+							<param>com.mariotti.project.controllers.*</param>
+						</targetTests>
+						<mutators>
+							<mutator>DEFAULTS</mutator>
+						</mutators>
+						<mutationThreshold>100</mutationThreshold>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>
