@@ -5,6 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class OfficeServiceTest {
 	private OfficeRepository officeRepository;
 	
 	@Test
-	public void test_getAllOffices() {
+	public void testGetAllOffices() {
 		Office firstOffice = new Office(1L, "office1", new ArrayList<>());
 		Office secondOffice = new Office(2L, "office2", new ArrayList<>());
 		when(officeRepository.findAll()).thenReturn(Arrays.asList(new Office[] { firstOffice, secondOffice }));
@@ -38,20 +40,20 @@ public class OfficeServiceTest {
 	}
 	
 	@Test
-	public void test_getOfficeById_notFound() {
+	public void testGetOfficeById_notFound() {
 		when(officeRepository.findById(anyLong())).thenReturn(Optional.empty());
 		assertThat(officeService.getOfficeById(1)).isNull();
 	}
 
 	@Test
-	public void test_getOfficeById_Found() {
+	public void testGetOfficeById_Found() {
 		Office office = new Office(1L, "office", new ArrayList<>());
 		when(officeRepository.findById(1L)).thenReturn(Optional.of(office));
 		assertThat(officeService.getOfficeById(1)).isSameAs(office);
 	}
 	
 	@Test
-	public void test_insertNewOffice() {
+	public void testInsertNewOffice() {
 		Office toSave = spy(new Office(99L, "", null));
 		Office saved = new Office(1L, "office", new ArrayList<>());
 		when(officeRepository.save(any(Office.class))).thenReturn(saved);
@@ -63,7 +65,7 @@ public class OfficeServiceTest {
 	}
 	
 	@Test
-	public void test_updateOfficeById() {
+	public void testUpdateOfficeById() {
 		Office replacement = spy(new Office(99L, "", null));
 		Office replaced = new Office(1L, "office", new ArrayList<>());
 		when(officeRepository.save(any(Office.class))).thenReturn(replaced);
@@ -72,6 +74,13 @@ public class OfficeServiceTest {
 		InOrder inOrder = inOrder(replacement, officeRepository);
 		inOrder.verify(replacement).setId(1L);
 		inOrder.verify(officeRepository).save(replacement);
+	}
+	
+	@Test
+	public void testDeleteOfficeById() {
+		Office office = new Office(1L, "office", new ArrayList<>());
+		officeService.deleteOfficeById(office.getId());
+		verify(officeRepository,times(1)).deleteById(office.getId());
 	}
 	
 }
