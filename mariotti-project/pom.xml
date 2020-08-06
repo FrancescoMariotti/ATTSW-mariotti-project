@@ -52,12 +52,12 @@
 			**/*Controller.java
 		</sonar.issue.ignore.multicriteria.e12.resourceKey>
 		<!-- Ignore '@RequestMapping" methods should specify HTTP method' as we need both GET and DELETE -->
-		<sonar.issue.ignore.multicriteria.e12.ruleKey>
+		<sonar.issue.ignore.multicriteria.e13.ruleKey>
 			java:S3752
-		</sonar.issue.ignore.multicriteria.e12.ruleKey>
-		<sonar.issue.ignore.multicriteria.e12.resourceKey>
+		</sonar.issue.ignore.multicriteria.e13.ruleKey>
+		<sonar.issue.ignore.multicriteria.e13.resourceKey>
 			**/*Controller.java
-		</sonar.issue.ignore.multicriteria.e12.resourceKey>
+		</sonar.issue.ignore.multicriteria.e13.resourceKey>
 	</properties>
 
 	<dependencies>
