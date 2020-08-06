@@ -32,4 +32,8 @@ public class OfficeService {
 		return officeRepository.save(replacement);
 	}
 
+	public void deleteOfficeById(long id) {
+		officeRepository.deleteById(id);
+	}
+
 }
