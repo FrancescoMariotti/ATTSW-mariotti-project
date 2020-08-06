@@ -47,17 +47,19 @@ public class OfficeWebControllerHtmlTest {
 
 	@Test
 	public void testHomePageWithOfficesShouldShowThemInATable() throws Exception {
-		when(officeService.getAllOffices()).thenReturn(asList(new Office(1L, "office1", new ArrayList<>()),
-				new Office(2L, "office2", new ArrayList<>())));
+		when(officeService.getAllOffices()).thenReturn(
+				asList(new Office(1L, "office1", new ArrayList<>()), new Office(2L, "office2", new ArrayList<>())));
 		HtmlPage page = this.webClient.getPage("/");
 		assertThat(page.getBody().getTextContent()).doesNotContain("No office found");
 		HtmlTable table = page.getHtmlElementById("office_table");
-		assertThat(removeWindowsCR(table.asText()))
-				.isEqualTo("Offices:\n" + "ID	Name\n" + "1	office1	View	Edit\n" + "2	office2	View	Edit");
+		assertThat(removeWindowsCR(table.asText())).isEqualTo("Offices:\n" + "ID	Name\n"
+				+ "1	office1	View	Edit	Delete\n" + "2	office2	View	Edit	Delete");
 		page.getAnchorByHref("/employees_office/1");
 		page.getAnchorByHref("/employees_office/2");
 		page.getAnchorByHref("/edit_office/1");
 		page.getAnchorByHref("/edit_office/2");
+		page.getAnchorByHref("/delete_office/1");
+		page.getAnchorByHref("/delete_office/2");
 	}
 
 	@Test
