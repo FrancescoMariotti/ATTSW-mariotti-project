@@ -16,30 +16,27 @@
 		<div>No employee found in this office</div>
 	</div>
 	<div th:unless="${employees.empty}">
-		<form>
-			<input type="hidden" name="_method" value="delete" />
-			<table id="employee_table">
-				<caption>Employees:</caption>
-				<thead>
-					<tr>
-						<th id="id">ID</th>
-						<th id="name">Name</th>
-						<th id="salary">Salary</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="employee : ${employees}">
-						<td th:text="${employee.id}"></td>
-						<td th:text="${employee.name}"></td>
-						<td th:text="${employee.salary}"></td>
-						<td><a
-							th:href="@{/employees_office/} + ${office.id} + @{/edit_employee/} + ${employee.id}">Edit</a></td>
-						<td><a
-							th:href="@{/employees_office/} + ${office.id} + @{/delete_employee/} + ${employee.id}">Delete</a></td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
+		<table id="employee_table">
+			<caption>Employees:</caption>
+			<thead>
+				<tr>
+					<th id="id">ID</th>
+					<th id="name">Name</th>
+					<th id="salary">Salary</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="employee : ${employees}">
+					<td th:text="${employee.id}"></td>
+					<td th:text="${employee.name}"></td>
+					<td th:text="${employee.salary}"></td>
+					<td><a
+						th:href="@{/employees_office/} + ${office.id} + @{/edit_employee/} + ${employee.id}">Edit</a></td>
+					<td><a
+						th:href="@{/employees_office/} + ${office.id} + @{/delete_employee/} + ${employee.id}">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>
