@@ -29,6 +29,7 @@
 					<td th:text="${office.name}"></td>
 					<td><a th:href="@{/employees_office/} + ${office.id}">View</a></td>
 					<td><a th:href="@{'/edit_office/' + ${office.id}}">Edit</a></td>
+					<td><a th:href="@{'/delete_office/' + ${office.id}}">Delete</a></td>
 				</tr>
 			</tbody>
 		</table>
