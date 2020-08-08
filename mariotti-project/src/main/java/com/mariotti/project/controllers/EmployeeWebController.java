@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
@@ -67,6 +69,15 @@ public class EmployeeWebController {
 		} else {
 			employeeService.updateEmployeeById(employeeId, employee);
 		}
+		return "redirect:/employees_office/" + officeId;
+	}
+
+	@RequestMapping(value = "/employees_office/{officeId}/delete_employee/{employeeId}", method = { RequestMethod.GET,
+			RequestMethod.DELETE })
+	public String deleteEmployee(@PathVariable long officeId, @PathVariable long employeeId, Model model) {
+		Office officeById = officeService.getOfficeById(officeId);
+		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
+		employeeService.deleteEmployeeById(employeeId);
 		return "redirect:/employees_office/" + officeId;
 	}
 }

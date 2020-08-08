@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -126,5 +127,15 @@ public class EmployeeWebControllerTest {
 				new Employee(null, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
 		verify(employeeService).insertNewEmployee(new Employee(null, "test", 1000, office));
+	}
+
+	@Test
+	public void testDeleteEmployeeShouldRemoveEmployee() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		Employee employee = new Employee(1L, "test", 1000, office);
+		mvc.perform(delete("/employees_office/1/delete_employee/1")).andExpect(MockMvcResultMatchers.status().isFound())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
+		verify(employeeService).deleteEmployeeById(employee.getId());
 	}
 }

@@ -19,7 +19,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
+import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
+import com.mariotti.project.repositories.EmployeeRepository;
 import com.mariotti.project.repositories.OfficeRepository;
 
 @RunWith(SpringRunner.class)
@@ -33,6 +35,8 @@ public class OfficeWebControllerIT {
 	private String url;
 	@Autowired
 	private OfficeRepository officeRepository;
+	@Autowired
+	private EmployeeRepository employeeRepository;
 
 	@Before
 	public void setup() {
@@ -64,14 +68,24 @@ public class OfficeWebControllerIT {
 	}
 
 	@Test
-	public void testEditEmployeePageUpdateEmployee() throws Exception {
+	public void testEditOfficePageUpdateOffice() throws Exception {
 		Office office = officeRepository.save(new Office(null, "old office", new ArrayList<>()));
 		driver.get(url + "/edit_office/" + office.getId());
 		final WebElement nameBox = driver.findElement(By.name("name"));
 		nameBox.clear();
-		nameBox.sendKeys("modified employee");
+		nameBox.sendKeys("modified office");
 		driver.findElement(By.name("btn_submit")).click();
-		assertThat(officeRepository.findByName("modified employee")).isNotNull();
+		assertThat(officeRepository.findByName("modified office")).isNotNull();
+	}
+	
+	@Test
+	public void testDeleteOfficePageRemoveOfficeAndItsEmployees() throws Exception {
+		Office office = officeRepository.save(new Office(null, "officeToDelete", new ArrayList<>()));
+		employeeRepository.save(new Employee(null, "employeeToDelete", 1000, office));
+		driver.get(url);
+		driver.findElement(By.linkText("Delete")).click();
+		assertThat(officeRepository.findByName("officeToDelete")).isNull();
+		assertThat(employeeRepository.findByName("employeeToDelete")).isNull();
 	}
 
 }

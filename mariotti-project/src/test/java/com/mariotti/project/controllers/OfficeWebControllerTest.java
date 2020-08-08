@@ -2,6 +2,7 @@ package com.mariotti.project.controllers;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static java.util.Arrays.asList;
@@ -101,6 +102,15 @@ public class OfficeWebControllerTest {
 				.andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
 		verify(officeService).insertNewOffice(new Office(null, "test", new ArrayList<>()));
+	}
+	
+	@Test
+	public void testDeleteOfficeShouldRemoveOffice() throws Exception {
+		Office office = new Office(1L, "office", new ArrayList<>());
+		when(officeService.getOfficeById(1L)).thenReturn(office);
+		mvc.perform(delete("/delete_office/1")).andExpect(MockMvcResultMatchers.status().isFound())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
+		verify(officeService).deleteOfficeById(office.getId());
 	}
 
 }

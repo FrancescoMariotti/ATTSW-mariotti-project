@@ -9,12 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.OfficeService;
 
 @Controller
 public class OfficeWebController {
+
+	private static final String OFFICE_ATTRIBUTE = "office";
 
 	private static final String MESSAGE = "message";
 
@@ -32,14 +36,14 @@ public class OfficeWebController {
 	@GetMapping("/edit_office/{id}")
 	public String editOffice(@PathVariable long id, Model model) {
 		Office officeById = officeService.getOfficeById(id);
-		model.addAttribute("office", officeById);
+		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
 		model.addAttribute(MESSAGE, officeById == null ? "No office found with id: " + id : "");
 		return "edit_office";
 	}
 
 	@GetMapping("/new_office")
 	public String newOffice(Model model) {
-		model.addAttribute("office", new Office(new ArrayList<>()));
+		model.addAttribute(OFFICE_ATTRIBUTE, new Office(new ArrayList<>()));
 		model.addAttribute(MESSAGE, "");
 		return "edit_office";
 	}
@@ -55,6 +59,15 @@ public class OfficeWebController {
 			office.setEmployees(existent.getEmployees());
 			officeService.updateOfficeById(id, office);
 		}
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/delete_office/{officeId}", method = { RequestMethod.GET,
+			RequestMethod.DELETE })
+	public String deleteEmployee(@PathVariable long officeId, Model model) {
+		Office officeById = officeService.getOfficeById(officeId);
+		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
+		officeService.deleteOfficeById(officeId);
 		return "redirect:/";
 	}
 }

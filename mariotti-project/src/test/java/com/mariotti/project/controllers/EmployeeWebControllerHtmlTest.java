@@ -64,10 +64,12 @@ public class EmployeeWebControllerHtmlTest {
 		HtmlTable table = page.getHtmlElementById("employee_table");
 		assertThat(removeWindowsCR(table.asText())).isEqualTo("Employees:\n" 
 				+ "ID	" + "Name	" + "Salary\n" 
-				+ "1	" + "employee1	" + "1000" + "	Edit\n" 
-				+ "2	" + "employee2	" + "2000" + "	Edit");
+				+ "1	" + "employee1	" + "1000" + "	Edit" + "	Delete\n" 
+				+ "2	" + "employee2	" + "2000" + "	Edit" + "	Delete");
 		page.getAnchorByHref("/employees_office/1/edit_employee/1");
 		page.getAnchorByHref("/employees_office/1/edit_employee/2");
+		page.getAnchorByHref("/employees_office/1/delete_employee/1");
+		page.getAnchorByHref("/employees_office/1/delete_employee/2");
 	}
 
 	@Test
