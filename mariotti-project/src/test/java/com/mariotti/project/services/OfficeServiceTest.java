@@ -93,5 +93,13 @@ public class OfficeServiceTest {
 		}
 		verify(officeRepository, times(1)).deleteById(office.getId());
 	}
+	
+	@Test
+	public void testDeleteOfficeByIdNotFound() {
+		when(officeRepository.findById(anyLong())).thenReturn(Optional.empty());
+		officeService.deleteOfficeById(anyLong());
+		verify(employeeRepository, times(0)).deleteById(anyLong());
+		verify(officeRepository, times(0)).deleteById(anyLong());
+	}
 
 }
