@@ -20,7 +20,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
+import com.mariotti.project.repositories.EmployeeRepository;
 import com.mariotti.project.repositories.OfficeRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,7 +32,9 @@ public class OfficeServiceTest {
 	private OfficeService officeService;
 	@Mock
 	private OfficeRepository officeRepository;
-	
+	@Mock
+	private EmployeeRepository employeeRepository;
+
 	@Test
 	public void testGetAllOffices() {
 		Office firstOffice = new Office(1L, "office1", new ArrayList<>());
@@ -38,7 +42,7 @@ public class OfficeServiceTest {
 		when(officeRepository.findAll()).thenReturn(Arrays.asList(new Office[] { firstOffice, secondOffice }));
 		assertThat(officeService.getAllOffices()).containsExactly(firstOffice, secondOffice);
 	}
-	
+
 	@Test
 	public void testGetOfficeById_notFound() {
 		when(officeRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -51,7 +55,7 @@ public class OfficeServiceTest {
 		when(officeRepository.findById(1L)).thenReturn(Optional.of(office));
 		assertThat(officeService.getOfficeById(1)).isSameAs(office);
 	}
-	
+
 	@Test
 	public void testInsertNewOffice() {
 		Office toSave = spy(new Office(99L, "", null));
@@ -63,7 +67,7 @@ public class OfficeServiceTest {
 		inOrder.verify(toSave).setId(null);
 		inOrder.verify(officeRepository).save(toSave);
 	}
-	
+
 	@Test
 	public void testUpdateOfficeById() {
 		Office replacement = spy(new Office(99L, "", null));
@@ -75,12 +79,19 @@ public class OfficeServiceTest {
 		inOrder.verify(replacement).setId(1L);
 		inOrder.verify(officeRepository).save(replacement);
 	}
-	
+
 	@Test
-	public void testDeleteOfficeById() {
+	public void testDeleteOfficeByIdFound() {
 		Office office = new Office(1L, "office", new ArrayList<>());
+		when(officeRepository.findById(1L)).thenReturn(Optional.of(office));
+		ArrayList<Employee> employees = new ArrayList<>();
+		employees.add(new Employee(1L, "employee", 1000, office));
+		when(employeeRepository.findByOffice(office)).thenReturn(employees);
 		officeService.deleteOfficeById(office.getId());
-		verify(officeRepository,times(1)).deleteById(office.getId());
+		for (Employee employee : employees) {
+			verify(employeeRepository, times(1)).deleteById(employee.getId());
+		}
+		verify(officeRepository, times(1)).deleteById(office.getId());
 	}
-	
+
 }
