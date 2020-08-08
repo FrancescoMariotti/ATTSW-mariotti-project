@@ -84,5 +84,13 @@ public class EmployeeWebControllerIT {
 		driver.findElement(By.name("btn_submit")).click();
 		assertThat(employeeRepository.findByName("modified employee").getSalary()).isEqualTo(2000L);
 	}
+	
+	@Test
+	public void testDeleteEmployeePageRemoveEmployee() throws Exception {
+		employeeRepository.save(new Employee(null, "employeeToDelete", 1000, office));
+		driver.get(url);
+		driver.findElement(By.linkText("Delete")).click();
+		assertThat(employeeRepository.findByName("employeeToDelete")).isNull();
+	}
 
 }
