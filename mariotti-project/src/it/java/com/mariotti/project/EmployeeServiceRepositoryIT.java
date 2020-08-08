@@ -46,4 +46,12 @@ public class EmployeeServiceRepositoryIT {
 				new Employee(saved.getId(), "modified", 2000, office));
 		assertThat(employeeRepository.findById(saved.getId()).get()).isEqualTo(modified);
 	}
+	
+	@Test
+	public void testEmployeeServiceShallDeleteFromEmployeeRepository() {
+		Office office = officeRepository.save(new Office(null, "office", new ArrayList<>()));
+		Employee employee = employeeRepository.save(new Employee(null, "employee", 1000, office));
+		employeeService.deleteEmployeeById(employee.getId());
+		assertThat(employeeRepository.findById(employee.getId())).isNotPresent();
+	}
 }
