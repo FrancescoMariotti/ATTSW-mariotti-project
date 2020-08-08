@@ -38,14 +38,16 @@ public class OfficeService {
 		replacement.setId(id);
 		return officeRepository.save(replacement);
 	}
-
+	
 	public void deleteOfficeById(long id) {
 		Office officeToDelete = officeRepository.findById(id).orElse(null);
-		List<Employee> employeesToDelete = employeeRepository.findByOffice(officeToDelete);
-		for (Employee employee : employeesToDelete) {
-			employeeRepository.deleteById(employee.getId());
+		if (officeRepository.findById(id).isPresent()) {
+			List<Employee> employeesToDelete = employeeRepository.findByOffice(officeToDelete);
+			for (Employee employee : employeesToDelete) {
+				employeeRepository.deleteById(employee.getId());
+			}
+			officeRepository.deleteById(id);
 		}
-		officeRepository.deleteById(id);
 	}
 
 }
