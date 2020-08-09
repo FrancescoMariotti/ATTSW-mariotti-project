@@ -51,7 +51,8 @@
 		<sonar.issue.ignore.multicriteria.e12.resourceKey>
 			**/*Controller.java
 		</sonar.issue.ignore.multicriteria.e12.resourceKey>
-		<!-- Ignore '@RequestMapping" methods should specify HTTP method' as we need both GET and DELETE -->
+		<!-- Ignore '@RequestMapping" methods should specify HTTP method' as we 
+			need both GET and DELETE -->
 		<sonar.issue.ignore.multicriteria.e13.ruleKey>
 			java:S3752
 		</sonar.issue.ignore.multicriteria.e13.ruleKey>
@@ -118,6 +119,23 @@
 			<artifactId>selenium-support</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>4.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tngtech.jgiven</groupId>
+			<artifactId>jgiven-junit</artifactId>
+			<version>0.18.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -139,6 +157,7 @@
 						<configuration>
 							<sources>
 								<source>src/it/java</source>
+								<source>src/bdd/java</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -215,6 +234,21 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.tngtech.jgiven</groupId>
+				<artifactId>jgiven-maven-plugin</artifactId>
+				<version>0.18.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<format>html</format>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -294,6 +328,129 @@
 						</plugin>
 					</plugins>
 				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>bdd-tests</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<skip.unit-tests>true</skip.unit-tests>
+				<skip.integration-tests>true</skip.integration-tests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>0.27.2</version>
+						<extensions>true</extensions>
+						<configuration>
+							<images>
+								<image>
+									<alias>database</alias>
+									<name>mysql:5.7</name>
+									<run>
+										<wait>
+											<log>mysqld: ready for connections</log>
+											<time>20000</time>
+										</wait>
+										<env>
+											<MYSQL_ROOT_PASSWORD>1234</MYSQL_ROOT_PASSWORD>
+											<MYSQL_DATABASE>app_db</MYSQL_DATABASE>
+											<MYSQL_USER>mariotti</MYSQL_USER>
+											<MYSQL_PASSWORD>1234</MYSQL_PASSWORD>
+										</env>
+										<ports>
+											<port>3306:3306</port>
+										</ports>
+									</run>
+								</image>
+							</images>
+						</configuration>
+						<executions>
+							<execution>
+								<id>docker:start</id>
+								<phase>test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>docker:stop</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>reserve-tomcat-port</id>
+								<goals>
+									<goal>reserve-network-port</goal>
+								</goals>
+								<phase>process-resources</phase>
+								<configuration>
+									<portNames>
+										<portName>tomcat.http.port</portName>
+									</portNames>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>pre-integration-test</id>
+								<goals>
+									<goal>start</goal>
+								</goals>
+								<configuration>
+									<arguments>
+										<argument>--server.port=${tomcat.http.port}</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>post-integration-test</id>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>bdd-tests</id>
+								<configuration>
+									<includes>
+										<include>**/*BDD.java</include>
+									</includes>
+								</configuration>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<systemPropertyVariables>
+								<server.port>${tomcat.http.port}</server.port>
+							</systemPropertyVariables>
+						</configuration>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 	</profiles>
