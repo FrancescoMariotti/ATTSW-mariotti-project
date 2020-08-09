@@ -1,4 +1,4 @@
-package com.mariotti.project.bdd;
+package com.mariotti.project.bdd.steps;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

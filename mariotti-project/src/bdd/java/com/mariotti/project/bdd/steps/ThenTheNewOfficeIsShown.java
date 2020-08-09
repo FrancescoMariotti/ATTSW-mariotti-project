@@ -1,4 +1,4 @@
-package com.mariotti.project.bdd;
+package com.mariotti.project.bdd.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
