@@ -23,7 +23,7 @@ public class ThenTheDeletedOfficeIsNotPresent extends Stage<ThenTheDeletedOffice
 	}
 
 	public ThenTheDeletedOfficeIsNotPresent theDeletedOfficeIsNotPresent() {
-		assertThat(driver.findElement(By.id("office_table")).getText()).doesNotContain(id + " ");
+		assertThat(driver.findElement(By.cssSelector("body")).getText()).doesNotContain(id + " ");
 		return self();
 	}
 }

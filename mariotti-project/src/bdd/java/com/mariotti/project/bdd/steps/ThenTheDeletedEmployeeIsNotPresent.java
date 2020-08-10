@@ -24,7 +24,7 @@ public class ThenTheDeletedEmployeeIsNotPresent extends Stage<ThenTheDeletedEmpl
 	}
 
 	public ThenTheDeletedEmployeeIsNotPresent theDeletedEmployeeIsNotPresent() {
-		assertThat(driver.findElement(By.id("employee_table")).getText()).doesNotContain(employeeId + " ");
+		assertThat(driver.findElement(By.cssSelector("body")).getText()).doesNotContain(employeeId + " ");
 		return self();
 	}
 }
