@@ -282,6 +282,7 @@
 							<mutator>DEFAULTS</mutator>
 						</mutators>
 						<mutationThreshold>100</mutationThreshold>
+						<timeoutConstant>8000</timeoutConstant>
 					</configuration>
 				</plugin>
 			</plugins>
