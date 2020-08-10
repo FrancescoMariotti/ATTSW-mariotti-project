@@ -9,22 +9,18 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ScenarioState;
 
-public class ThenTheModifiedOfficeIsShown extends Stage<ThenTheModifiedOfficeIsShown> {
+public class ThenTheNewEmployeeIsShown extends Stage<ThenTheNewEmployeeIsShown> {
 
 	@ScenarioState
 	WebDriver driver;
-
-	@ScenarioState
-	String id;
 
 	@AfterStage
 	public void teardown() {
 		driver.quit();
 	}
 
-	public ThenTheModifiedOfficeIsShown theModifiedOfficeIsShown() {
-		assertThat(driver.findElement(By.id("office_table")).getText()).contains(id, "modified office");
+	public ThenTheNewEmployeeIsShown theNewEmployeeIsShown() {
+		assertThat(driver.findElement(By.id("employee_table")).getText()).contains("new employee", "1000");
 		return self();
 	}
 }
-

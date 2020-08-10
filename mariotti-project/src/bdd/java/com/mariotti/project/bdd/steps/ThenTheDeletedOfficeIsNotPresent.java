@@ -9,7 +9,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ScenarioState;
 
-public class ThenTheModifiedOfficeIsShown extends Stage<ThenTheModifiedOfficeIsShown> {
+public class ThenTheDeletedOfficeIsNotPresent extends Stage<ThenTheDeletedOfficeIsNotPresent> {
 
 	@ScenarioState
 	WebDriver driver;
@@ -22,9 +22,8 @@ public class ThenTheModifiedOfficeIsShown extends Stage<ThenTheModifiedOfficeIsS
 		driver.quit();
 	}
 
-	public ThenTheModifiedOfficeIsShown theModifiedOfficeIsShown() {
-		assertThat(driver.findElement(By.id("office_table")).getText()).contains(id, "modified office");
+	public ThenTheDeletedOfficeIsNotPresent theDeletedOfficeIsNotPresent() {
+		assertThat(driver.findElement(By.id("office_table")).getText()).doesNotContain(id + " ");
 		return self();
 	}
 }
-

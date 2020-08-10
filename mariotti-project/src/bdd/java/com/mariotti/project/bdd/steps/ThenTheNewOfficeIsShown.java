@@ -7,11 +7,11 @@ import org.openqa.selenium.WebDriver;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioState;
 
 public class ThenTheNewOfficeIsShown extends Stage<ThenTheNewOfficeIsShown> {
 	
-	@ExpectedScenarioState
+	@ScenarioState
 	WebDriver driver;
 	
 	@AfterStage

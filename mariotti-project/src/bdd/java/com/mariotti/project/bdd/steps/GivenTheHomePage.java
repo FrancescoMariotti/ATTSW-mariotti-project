@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioState;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -14,7 +14,7 @@ public class GivenTheHomePage extends Stage<GivenTheHomePage> {
 	private static int port = Integer.parseInt(System.getProperty("server.port", "8080"));
 	private static String url = "http://localhost:" + port;
 	
-	@ProvidedScenarioState
+	@ScenarioState
 	WebDriver driver;
 	
 	@BeforeStage

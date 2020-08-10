@@ -5,14 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioState;
 
 public class WhenIModifyThatOffice extends Stage<WhenIModifyThatOffice> {
 
-	@ExpectedScenarioState
+	@ScenarioState
 	WebDriver driver;
 
-	@ExpectedScenarioState
+	@ScenarioState
 	String id;
 
 	public WhenIModifyThatOffice iModifyThatOffice() {

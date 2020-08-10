@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioState;
 
 public class WhenICreateNewOffice extends Stage<WhenICreateNewOffice> {
 	
-	@ExpectedScenarioState
+	@ScenarioState
 	WebDriver driver;
 	
     public WhenICreateNewOffice iCreateNewOffice() {
