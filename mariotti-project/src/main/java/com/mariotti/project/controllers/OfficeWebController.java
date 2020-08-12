@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mariotti.project.models.Office;
+import com.mariotti.project.models.OfficeDTO;
 import com.mariotti.project.services.OfficeService;
 
 @Controller
@@ -49,7 +50,8 @@ public class OfficeWebController {
 	}
 
 	@PostMapping("/save_office")
-	public String saveOffice(Office office) {
+	public String saveOffice(OfficeDTO officeDTO) {
+		Office office=officeMapping(officeDTO);
 		final Long id = office.getId();
 		if (id == null) {
 			office.setEmployees(new ArrayList<>());
@@ -62,6 +64,7 @@ public class OfficeWebController {
 		return "redirect:/";
 	}
 	
+
 	@RequestMapping(value = "/delete_office/{officeId}", method = { RequestMethod.GET,
 			RequestMethod.DELETE })
 	public String deleteEmployee(@PathVariable long officeId, Model model) {
@@ -69,5 +72,13 @@ public class OfficeWebController {
 		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
 		officeService.deleteOfficeById(officeId);
 		return "redirect:/";
+	}
+	
+	private Office officeMapping(OfficeDTO officeDTO) {
+		Office office = new Office();
+		office.setId(officeDTO.getId());
+		office.setName(officeDTO.getName());
+		office.setEmployees(officeDTO.getEmployees());
+		return office;
 	}
 }

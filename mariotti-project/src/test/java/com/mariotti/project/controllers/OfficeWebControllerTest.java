@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.mariotti.project.models.Office;
+import com.mariotti.project.models.OfficeDTO;
 import com.mariotti.project.services.OfficeService;
 
 import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
@@ -80,30 +81,33 @@ public class OfficeWebControllerTest {
 	@Test
 	public void testEditNewOffice() throws Exception {
 		mvc.perform(get("/new_office")).andExpect(view().name("edit_office"))
-				.andExpect(model().attribute("office", new Office(new ArrayList<>()))).andExpect(model().attribute("message", ""));
+				.andExpect(model().attribute("office", new Office(new ArrayList<>())))
+				.andExpect(model().attribute("message", ""));
 		verifyZeroInteractions(officeService);
 	}
 
 	@Test
 	public void testPostOfficeWithIdShouldUpdateExistingOffice() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<>());
+		OfficeDTO officeDTO = new OfficeDTO(1L, "office", new ArrayList<>());
+		Office office = officeMapping(officeDTO);
 		when(officeService.getOfficeById(1L)).thenReturn(office);
-		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", new Office(1L, "test", office.getEmployees())))
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", officeDTO))
 				.andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
-		verify(officeService).updateOfficeById(1L, new Office(1L, "test", office.getEmployees()));
+		verify(officeService).updateOfficeById(1L, office);
 	}
 
 	@Test
 	public void testPostOfficeWithNoIdShouldAddNewOffice() throws Exception {
-		Office office = new Office(1L, "office", new ArrayList<>());
+		OfficeDTO officeDTO = new OfficeDTO(null, "office", new ArrayList<>());
+		Office office = officeMapping(officeDTO);
 		when(officeService.getOfficeById(1L)).thenReturn(office);
-		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", new Office(null, "test", new ArrayList<>())))
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", officeDTO))
 				.andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
-		verify(officeService).insertNewOffice(new Office(null, "test", new ArrayList<>()));
+		verify(officeService).insertNewOffice(office);
 	}
-	
+
 	@Test
 	public void testDeleteOfficeShouldRemoveOffice() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<>());
@@ -111,6 +115,14 @@ public class OfficeWebControllerTest {
 		mvc.perform(delete("/delete_office/1")).andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
 		verify(officeService).deleteOfficeById(office.getId());
+	}
+
+	private Office officeMapping(OfficeDTO officeDTO) {
+		Office office = new Office();
+		office.setId(officeDTO.getId());
+		office.setName(officeDTO.getName());
+		office.setEmployees(officeDTO.getEmployees());
+		return office;
 	}
 
 }

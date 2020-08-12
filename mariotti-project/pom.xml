@@ -43,14 +43,6 @@
 		<sonar.issue.ignore.multicriteria.e11.resourceKey>
 			**/*ApplicationTests.java
 		</sonar.issue.ignore.multicriteria.e11.resourceKey>
-		<!-- Ignore 'Persistent entities should not be used as arguments of "@RequestMapping" 
-			methods' -->
-		<sonar.issue.ignore.multicriteria.e12.ruleKey>
-			java:S4684
-		</sonar.issue.ignore.multicriteria.e12.ruleKey>
-		<sonar.issue.ignore.multicriteria.e12.resourceKey>
-			**/*Controller.java
-		</sonar.issue.ignore.multicriteria.e12.resourceKey>
 		<!-- Ignore '@RequestMapping" methods should specify HTTP method' as we 
 			need both GET and DELETE -->
 		<sonar.issue.ignore.multicriteria.e13.ruleKey>
