@@ -1,5 +1,6 @@
 package com.mariotti.project.controllers;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -89,7 +90,8 @@ public class OfficeWebControllerTest {
 	@Test
 	public void testPostOfficeWithIdShouldUpdateExistingOffice() throws Exception {
 		OfficeDTO officeDTO = new OfficeDTO(1L, "office", new ArrayList<>());
-		Office office = officeMapping(officeDTO);
+		Office office = OfficeWebController.officeMapping(officeDTO);
+		assertThat(office).isEqualTo(new Office(1L, "office", new ArrayList<>()));
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", officeDTO))
 				.andExpect(MockMvcResultMatchers.status().isFound())
@@ -100,7 +102,8 @@ public class OfficeWebControllerTest {
 	@Test
 	public void testPostOfficeWithNoIdShouldAddNewOffice() throws Exception {
 		OfficeDTO officeDTO = new OfficeDTO(null, "office", new ArrayList<>());
-		Office office = officeMapping(officeDTO);
+		Office office = OfficeWebController.officeMapping(officeDTO);
+		assertThat(office).isEqualTo(new Office(null, "office", new ArrayList<>()));
 		when(officeService.getOfficeById(1L)).thenReturn(office);
 		mvc.perform(MockMvcRequestBuilderUtils.postForm("/save_office", officeDTO))
 				.andExpect(MockMvcResultMatchers.status().isFound())
@@ -115,14 +118,6 @@ public class OfficeWebControllerTest {
 		mvc.perform(delete("/delete_office/1")).andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/"));
 		verify(officeService).deleteOfficeById(office.getId());
-	}
-
-	private Office officeMapping(OfficeDTO officeDTO) {
-		Office office = new Office();
-		office.setId(officeDTO.getId());
-		office.setName(officeDTO.getName());
-		office.setEmployees(officeDTO.getEmployees());
-		return office;
 	}
 
 }

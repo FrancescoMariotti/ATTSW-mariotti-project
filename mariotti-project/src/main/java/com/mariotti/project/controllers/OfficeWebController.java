@@ -74,7 +74,7 @@ public class OfficeWebController {
 		return "redirect:/";
 	}
 	
-	private Office officeMapping(OfficeDTO officeDTO) {
+	public static Office officeMapping(OfficeDTO officeDTO) {
 		Office office = new Office();
 		office.setId(officeDTO.getId());
 		office.setName(officeDTO.getName());
