@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mariotti.project.models.Employee;
+import com.mariotti.project.models.EmployeeDTO;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.EmployeeService;
 import com.mariotti.project.services.OfficeService;
@@ -60,9 +61,10 @@ public class EmployeeWebController {
 	}
 
 	@PostMapping("/employees_office/{officeId}/save_employee")
-	public String saveEmployee(@PathVariable long officeId, Employee employee) {
+	public String saveEmployee(@PathVariable long officeId, EmployeeDTO employeeDTO) {
 		Office officeById = officeService.getOfficeById(officeId);
-		employee.setOffice(officeById);
+		employeeDTO.setOffice(officeById);
+		Employee employee = employeeMapping(employeeDTO);
 		final Long employeeId = employee.getId();
 		if (employeeId == null) {
 			employeeService.insertNewEmployee(employee);
@@ -79,5 +81,14 @@ public class EmployeeWebController {
 		model.addAttribute(OFFICE_ATTRIBUTE, officeById);
 		employeeService.deleteEmployeeById(employeeId);
 		return "redirect:/employees_office/" + officeId;
+	}
+	
+	public static Employee employeeMapping(EmployeeDTO employeeDTO) {
+		Employee employee = new Employee();
+		employee.setId(employeeDTO.getId());
+		employee.setName(employeeDTO.getName());
+		employee.setSalary(employeeDTO.getSalary());
+		employee.setOffice(employeeDTO.getOffice());
+		return employee;
 	}
 }

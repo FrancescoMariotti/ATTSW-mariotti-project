@@ -1,6 +1,7 @@
 package com.mariotti.project.controllers;
 
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.mariotti.project.models.Employee;
+import com.mariotti.project.models.EmployeeDTO;
 import com.mariotti.project.models.Office;
 import com.mariotti.project.services.EmployeeService;
 import com.mariotti.project.services.OfficeService;
@@ -112,21 +114,27 @@ public class EmployeeWebControllerTest {
 	@Test
 	public void testPostEmployeeWithIdShouldUpdateExistingEmployee() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<>());
+		EmployeeDTO employeeDTO = new EmployeeDTO(1L, "test", 1000, office);
+		Employee employee = EmployeeWebController.employeeMapping(employeeDTO);
+		assertThat(employee).isEqualTo(new Employee(1L, "test", 1000, office));
 		when(officeService.getOfficeById(1L)).thenReturn(office);
-		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",
-				new Employee(1L, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee", employeeDTO))
+				.andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
-		verify(employeeService).updateEmployeeById(1L, new Employee(1L, "test", 1000, office));
+		verify(employeeService).updateEmployeeById(1L, employee);
 	}
 
 	@Test
 	public void testPostEmployeeWithNoIdShouldAddNewEmployee() throws Exception {
 		Office office = new Office(1L, "office", new ArrayList<>());
+		EmployeeDTO employeeDTO = new EmployeeDTO(null, "test", 1000, office);
+		Employee employee = EmployeeWebController.employeeMapping(employeeDTO);
+		assertThat(employee).isEqualTo(new Employee(null, "test", 1000, office));
 		when(officeService.getOfficeById(1L)).thenReturn(office);
-		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee",
-				new Employee(null, "test", 1000, office))).andExpect(MockMvcResultMatchers.status().isFound())
+		mvc.perform(MockMvcRequestBuilderUtils.postForm("/employees_office/1/save_employee", employeeDTO))
+				.andExpect(MockMvcResultMatchers.status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
-		verify(employeeService).insertNewEmployee(new Employee(null, "test", 1000, office));
+		verify(employeeService).insertNewEmployee(employee);
 	}
 
 	@Test
@@ -138,4 +146,5 @@ public class EmployeeWebControllerTest {
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/employees_office/1"));
 		verify(employeeService).deleteEmployeeById(employee.getId());
 	}
+
 }
