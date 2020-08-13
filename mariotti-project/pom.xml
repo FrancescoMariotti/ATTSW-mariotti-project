@@ -30,6 +30,9 @@
 			${project.build.sourceDirectory},
 			${basedir}/src/main/resources
 		</sonar.sources>
+		<sonar.exclusions>
+			**/*DTO.*
+		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/*Application.*,
 			**/models/*
