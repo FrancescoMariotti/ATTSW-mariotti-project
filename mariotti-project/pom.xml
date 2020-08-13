@@ -31,7 +31,8 @@
 			${basedir}/src/main/resources
 		</sonar.sources>
 		<sonar.exclusions>
-			**/*DTO.*
+			**/*DTO.*,
+			**/*.css
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/*Application.*,

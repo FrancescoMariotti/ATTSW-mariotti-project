@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
+<link th:href="@{/main.css}" rel="stylesheet" />
 <title>Employees</title>
 </head>
 <body>
@@ -32,7 +33,7 @@
 					<td th:text="${employee.salary}"></td>
 					<td><a
 						th:href="@{/employees_office/} + ${office.id} + @{/edit_employee/} + ${employee.id}">Edit</a></td>
-					<td><a
+					<td><a id="delete"
 						th:href="@{/employees_office/} + ${office.id} + @{/delete_employee/} + ${employee.id}">Delete</a></td>
 				</tr>
 			</tbody>
