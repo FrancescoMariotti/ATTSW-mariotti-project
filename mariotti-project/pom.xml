@@ -338,6 +338,7 @@
 							<excludes>
 								<exclude>**/*Application.*</exclude>
 								<exclude>**/models/*</exclude>
+								<exclude>**com.gargoylesoftware.css.parser*</exclude>
 							</excludes>
 						</configuration>
 						<executions>
