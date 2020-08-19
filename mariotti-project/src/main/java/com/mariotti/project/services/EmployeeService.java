@@ -3,6 +3,7 @@ package com.mariotti.project.services;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mariotti.project.models.Employee;
 import com.mariotti.project.models.Office;
@@ -29,18 +30,22 @@ public class EmployeeService {
 		return employeeRepository.findById(id).orElse(null);
 	}
 
+	@Transactional
 	public Employee insertNewEmployee(Employee employee) {
 		employee.setId(null);
 		return employeeRepository.save(employee);
 	}
 
+	@Transactional
 	public Employee updateEmployeeById(long id, Employee replacement) {
 		replacement.setId(id);
 		return employeeRepository.save(replacement);
 	}
-	
+
+	@Transactional
 	public void deleteEmployeeById(long id) {
 		employeeRepository.deleteById(id);
 	}
+	
 
 }
